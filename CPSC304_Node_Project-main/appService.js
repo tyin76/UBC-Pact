@@ -91,6 +91,8 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE DEMOTABLE`);
             await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE QUESTION CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE PACT CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -120,6 +122,33 @@ async function initiateDemotable() {
         )
 
     `);
+        // Create Question
+        await connection.execute(`
+        CREATE TABLE Question (
+            QuestionID CHAR(8) PRIMARY KEY, 
+            QuestionContent VARCHAR2(2000) NOT NULL
+        );
+    `);
+
+
+
+        await connection.execute(`
+        CREATE TABLE Pact (
+            User_A_Email VARCHAR2(255),
+            User_B_Email VARCHAR2(255),
+            User_A_Contract VARCHAR2(255),
+            User_B_Contract VARCHAR2(255),
+            CompatabilityScore INTEGER,
+            PRIMARY KEY (User_A_Email, User_B_Email),
+            FOREIGN KEY (User_A_Email) REFERENCES User(Email),
+            FOREIGN KEY (User_B_Email) REFERENCES User(Email),
+            FOREIGN KEY (User_A_Contract) REFERENCES UserAContract(Contract),
+            FOREIGN KEY (User_B_Contract) REFERENCES UserBContract(Contract),
+            PRIMARY KEY (User_A_Email, User_B_Email)
+    );
+    `)
+
+
         return true;
     }).catch(() => {
         return false;
