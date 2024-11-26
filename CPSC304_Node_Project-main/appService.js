@@ -91,6 +91,7 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE DEMOTABLE`);
             await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -108,6 +109,20 @@ async function initiateDemotable() {
         CREATE TABLE PostalCode (
             PostalCode VARCHAR2(20) PRIMARY KEY,
             Country VARCHAR2(20)
+        )
+    `);
+
+            // Create PROFILE
+        await connection.execute(`
+        CREATE TABLE Profile (
+            ProfileID VARCHAR2(20) PRIMARY KEY,
+            Name VARCHAR2(20),
+            Age INTEGER,
+            Sexuality VARCHAR2(10),
+            DreamVacation VARCHAR2(50),
+            FavouriteHobby VARCHAR2(30),
+            FavouriteSport VARCHAR2(30),
+            FavouriteMusicGenre VARCHAR2(30)
         )
     `);
 
