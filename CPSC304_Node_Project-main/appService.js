@@ -93,6 +93,9 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE QUESTION CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PACT CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -113,6 +116,20 @@ async function initiateDemotable() {
         )
     `);
 
+        // Create PROFILE
+        await connection.execute(`
+        CREATE TABLE Profile (
+            ProfileID VARCHAR2(20) PRIMARY KEY,
+            Name VARCHAR2(20),
+            Age INTEGER,
+            Sexuality VARCHAR2(10),
+            DreamVacation VARCHAR2(50),
+            FavouriteHobby VARCHAR2(30),
+            FavouriteSport VARCHAR2(30),
+            FavouriteMusicGenre VARCHAR2(30)
+        )
+    `);
+
         // Create PostalCodeCity 
         await connection.execute(`
         CREATE TABLE PostalCodeCity (
@@ -120,7 +137,6 @@ async function initiateDemotable() {
             City VARCHAR2(50),
             FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
         )
-
     `);
         // Create Question
         await connection.execute(`
@@ -148,6 +164,31 @@ async function initiateDemotable() {
     );
     `)
 
+
+        // Create Mailbox 
+        await connection.execute(`
+        CREATE TABLE Mailbox (
+            MailboxID VARCHAR2(255) PRIMARY KEY,
+            UnreadMail NUMBER
+        )   
+    `);
+
+        // Create Personality 
+        await connection.execute(`
+        CREATE TABLE Personality (
+            PersonalityID VARCHAR2(8) PRIMARY KEY,
+            Introvertedness NUMBER,
+            Extrovertedness NUMBER,
+            Intuitive NUMBER, 
+            Observant NUMBER, 
+            Thinking NUMBER, 
+            Feeling NUMBER, 
+            Prospecting NUMBER, 
+            Judging NUMBER, 
+            Turbulent NUMBER,
+            Assertive NUMBER
+        )
+    `);
 
         return true;
     }).catch(() => {
