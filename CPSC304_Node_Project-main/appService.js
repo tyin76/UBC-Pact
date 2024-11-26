@@ -89,16 +89,37 @@ async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
             await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
+            await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
+        } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
 
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
+        // Create DEMOTABLE
+        await connection.execute(`
+        CREATE TABLE DEMOTABLE (
+            id NUMBER PRIMARY KEY,
+            name VARCHAR2(20)
+        )
+    `);
+
+        // Create POSTALCODE
+        await connection.execute(`
+        CREATE TABLE PostalCode (
+            PostalCode VARCHAR2(20) PRIMARY KEY,
+            Country VARCHAR2(20)
+        )
+    `);
+
+        // Create PostalCodeCity 
+        await connection.execute(`
+        CREATE TABLE PostalCodeCity (
+            PostalCode VARCHAR2(20) PRIMARY KEY,
+            City VARCHAR2(50),
+            FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
+        )
+
+    `);
         return true;
     }).catch(() => {
         return false;
@@ -145,8 +166,8 @@ async function countDemotable() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
+    initiateDemotable,
+    insertDemotable,
+    updateNameDemotable,
     countDemotable
 };
