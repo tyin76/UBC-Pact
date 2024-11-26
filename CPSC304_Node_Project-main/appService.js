@@ -91,6 +91,8 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE DEMOTABLE`);
             await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -118,8 +120,33 @@ async function initiateDemotable() {
             City VARCHAR2(50),
             FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
         )
-
     `);
+
+        // Create Mailbox 
+        await connection.execute(`
+        CREATE TABLE Mailbox (
+            MailboxID VARCHAR2(255) PRIMARY KEY,
+            UnreadMail NUMBER
+        )   
+    `);
+
+        // Create Personality 
+        await connection.execute(`
+        CREATE TABLE Personality (
+            PersonalityID VARCHAR2(8) PRIMARY KEY,
+            Introvertedness NUMBER,
+            Extrovertedness NUMBER,
+            Intuitive NUMBER, 
+            Observant NUMBER, 
+            Thinking NUMBER, 
+            Feeling NUMBER, 
+            Prospecting NUMBER, 
+            Judging NUMBER, 
+            Turbulent NUMBER,
+            Assertive NUMBER
+        )
+    `);
+
         return true;
     }).catch(() => {
         return false;
