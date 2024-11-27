@@ -96,10 +96,16 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Question CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Users CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE UserAContract CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE UserBContract CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailAge CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailGender CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailPostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mail CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE UserAnswer CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Matches CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Pact CASCADE CONSTRAINTS`);
+
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -168,27 +174,10 @@ async function initiateDemotable() {
         )
     `);
 
-        // Create Pact
-        //     await connection.execute(`
-        //     CREATE TABLE PACT(
-        //         User_A_Email VARCHAR(255),
-        //         User_B_Email VARCHAR(255),
-        //         Compatibility_Score NUMERIC,
-        //         User_A_Contract VARCHAR(255),
-        //         User_B_Contract VARCHAR(255),
-        //         FOREIGN KEY (User_A_Email) REFERENCES User(Email),
-        //         FOREIGN KEY (User_B_Email) REFERENCES User(Email),
-        //         FOREIGN KEY (User_A_Contract) REFERENCES UserAContract(Contract),
-        //         FOREIGN KEY (User_B_Contract) REFERENCES UserBContract(Contract),
-        //         PRIMARY KEY (User_A_Email, User_B_Email)
-        //     )
-
-        // `);
-
         // Create Question
         await connection.execute(`
         CREATE TABLE Question (
-            QuestionID CHAR(8) PRIMARY KEY, 
+            QuestionID VARCHAR2(8) PRIMARY KEY, 
             QuestionContent VARCHAR(2000)
       )
     `);
@@ -209,6 +198,26 @@ async function initiateDemotable() {
             ) 
     `);
 
+        // Create User
+        await connection.execute(`
+            CREATE TABLE UserAContract(
+                User_A_Email VARCHAR2(200) PRIMARY KEY,
+                Contract VARCHAR2(255),
+                FOREIGN KEY (User_A_Email) REFERENCES Users(Email)
+            )
+        
+        `);
+
+        // Create User
+        await connection.execute(`
+            CREATE TABLE UserBContract(
+                User_B_Email VARCHAR2(200) PRIMARY KEY,
+                Contract VARCHAR2(255),
+                FOREIGN KEY (User_B_Email) REFERENCES Users(Email)
+            )
+        
+        `);
+
         // Create UserEmailAge table
         await connection.execute(`
             CREATE TABLE UserEmailAge (
@@ -225,8 +234,8 @@ async function initiateDemotable() {
                 Gender VARCHAR2(20),
                 FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
             )
-        `);     
-        
+        `);
+
         // Create UserEmailGender table
         await connection.execute(`
             CREATE TABLE UserEmailPostalCode (
@@ -234,18 +243,7 @@ async function initiateDemotable() {
                 PostalCode VARCHAR2(20),
                 FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
             )
-        `); 
-
-        // Create UserEmailGender table
-        await connection.execute(`
-            CREATE TABLE Mail (
-                MailID CHAR(20) PRIMARY KEY,
-                MailboxID VARCHAR2(255),
-                Email VARCHAR2(255), 
-                Message VARCHAR2(255),
-                FOREIGN KEY (MailboxID) REFERENCES Mailbox(MailboxID)
-            )
-        `); 
+        `);
 
 
         return true;
