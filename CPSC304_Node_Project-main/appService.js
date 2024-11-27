@@ -95,6 +95,7 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Question CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Users CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -180,11 +181,28 @@ async function initiateDemotable() {
 
         // `);
 
+        // Create Question
         await connection.execute(`
         CREATE TABLE Question (
             QuestionID CHAR(8) PRIMARY KEY, 
             QuestionContent VARCHAR(2000)
       )
+    `);
+
+        // Create User
+        await connection.execute(`
+        CREATE TABLE Users (
+            Email VARCHAR2(200) PRIMARY KEY,
+            Name VARCHAR2(200),
+            PersonalityID VARCHAR2(8),
+            ProfileID VARCHAR2(20),
+            MailBoxID VARCHAR2(8),
+            PostalCode VARCHAR2(20),
+            FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID) ON DELETE CASCADE,
+            FOREIGN KEY (PersonalityID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
+            FOREIGN KEY (MailBoxID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
+            FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
+            ) 
     `);
 
 
