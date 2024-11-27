@@ -98,9 +98,9 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE Users CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserAContract CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserBContract CASCADE CONSTRAINTS`);
-            await connection.execute(`DROP TABLE UserEmailAge CASCADE CONSTRAINTS`);
-            await connection.execute(`DROP TABLE UserEmailGender CASCADE CONSTRAINTS`);
-            await connection.execute(`DROP TABLE UserEmailPostalCode CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE UserAge CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE UserGender CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE UserPostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mail CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserAnswer CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Matches CASCADE CONSTRAINTS`);
@@ -218,34 +218,34 @@ async function initiateDemotable() {
         
         `);
 
-        // Create UserEmailAge table
+        // Create UserAge table
         await connection.execute(`
-            CREATE TABLE UserEmailAge (
+            CREATE TABLE UserAge (
                 Email VARCHAR2(200) PRIMARY KEY,
                 Age NUMBER,
                 FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
             )
         `);
 
-        // Create UserEmailGender table
+        // Create UserGender table
         await connection.execute(`
-            CREATE TABLE UserEmailGender (
+            CREATE TABLE UserGender (
                 Email VARCHAR2(200) PRIMARY KEY,
                 Gender VARCHAR2(20),
                 FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
             )
         `);
 
-        // Create UserEmailGender table
+        // Create UserGender table
         await connection.execute(`
-            CREATE TABLE UserEmailPostalCode (
+            CREATE TABLE UserPostalCode (
                 Email VARCHAR2(200) PRIMARY KEY,
                 PostalCode VARCHAR2(20),
                 FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
             )
         `);
 
-        // Create UserEmailGender table
+        // Create Mail table
         await connection.execute(`
             CREATE TABLE Mail (
                 MailID CHAR(20) PRIMARY KEY,
