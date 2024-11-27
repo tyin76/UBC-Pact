@@ -78,6 +78,22 @@ async function resetDemotable() {
     }
 }
 
+// This function inserts test user data.
+async function insertTestData() {
+    const response = await fetch("/insertTestData", {
+        method: 'POST'
+    });
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        const messageElement = document.getElementById('insertTestDataMsg');
+        messageElement.textContent = "test data inserted successfully!";
+        fetchTableData();
+    } else {
+        alert("Error inserting users!");
+    }
+}
+
 // Inserts new records into the demotable.
 async function insertDemotable(event) {
     event.preventDefault();
@@ -164,6 +180,7 @@ window.onload = function() {
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("insertTestData").addEventListener("click", insertTestData);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 

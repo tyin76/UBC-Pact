@@ -1,5 +1,6 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
+const { insertFegiclyn, insertTerence, insertFegico, insertPostalCodes, insertJake, insertJaklyn, insertTerelyn, assignPostalCodes, assignGenders } = require('./userData');
 
 const envVariables = loadEnvFile('./.env');
 
@@ -193,8 +194,7 @@ async function initiateDemotable() {
             PostalCode VARCHAR2(20),
             FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID) ON DELETE CASCADE,
             FOREIGN KEY (PersonalityID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
-            FOREIGN KEY (MailBoxID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
-            FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
+            FOREIGN KEY (MailBoxID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE
             ) 
     `);
 
@@ -236,7 +236,7 @@ async function initiateDemotable() {
             )
         `);
 
-        // Create UserGender table
+        // Create UserPostalCode table
         await connection.execute(`
             CREATE TABLE UserPostalCode (
                 Email VARCHAR2(200) PRIMARY KEY,
@@ -317,6 +317,36 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function insertTestData() {
+    return await withOracleDB(async (connection) => {
+        try {
+            // Insert PostalCode first because a User needs to have a postal code
+            await insertPostalCodes(connection);
+
+            await insertFegiclyn(connection);
+            await insertTerence(connection);
+            await insertFegico(connection);
+            await insertJake(connection);
+            await insertJaklyn(connection);
+            await insertTerelyn(connection);
+
+            // Can only assign postal codes once a users have been created.
+            await assignPostalCodes(connection);
+
+            // Can only assign genders once a users have been created.
+            await assignGenders(connection);
+
+            console.log('Test user inserted successfully.');
+            return true;
+        } catch (error) {
+            console.error('Error inserting test user:', error);
+            await connection.rollback();
+            return false;
+        }
+    });
+}
+
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -346,5 +376,6 @@ module.exports = {
     initiateDemotable,
     insertDemotable,
     updateNameDemotable,
-    countDemotable
+    countDemotable,
+    insertTestData
 };

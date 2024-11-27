@@ -64,5 +64,14 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.post('/insertTestData', async (req, res) => {
+    const insertResult = await appService.insertTestData();
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+})
+
 
 module.exports = router;
