@@ -102,6 +102,7 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE UserEmailGender CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailPostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserAnswer CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Matches CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Pact CASCADE CONSTRAINTS`);
 
         } catch (err) {
@@ -252,6 +253,18 @@ async function initiateDemotable() {
             	Email VARCHAR2(255),
 	            FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE,
 	            FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID) ON DELETE CASCADE 
+            )
+        `);
+
+        // Create Matches table
+        await connection.execute(`
+            CREATE TABLE Matches (
+	            User_Email_A VARCHAR2(255),
+	            User_Email_B VARCHAR2(255),
+	            MatchScore NUMBER,
+        	    PRIMARY KEY (User_Email_A, User_Email_B),
+        	    FOREIGN KEY (User_Email_A) REFERENCES Users(Email) ON DELETE CASCADE,
+	            FOREIGN KEY (User_Email_B) REFERENCES Users(Email) ON DELETE CASCADE
             )
         `);
 
