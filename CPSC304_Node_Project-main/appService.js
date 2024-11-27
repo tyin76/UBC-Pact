@@ -99,6 +99,7 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE UserEmailAge CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailGender CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailPostalCode CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Mail CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -232,6 +233,17 @@ async function initiateDemotable() {
                 Email VARCHAR2(200) PRIMARY KEY,
                 PostalCode VARCHAR2(20),
                 FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
+            )
+        `); 
+
+        // Create UserEmailGender table
+        await connection.execute(`
+            CREATE TABLE Mail (
+                MailID CHAR(20) PRIMARY KEY,
+                MailboxID VARCHAR2(255),
+                Email VARCHAR2(255), 
+                Message VARCHAR2(255),
+                FOREIGN KEY (MailboxID) REFERENCES Mailbox(MailboxID)
             )
         `); 
 
