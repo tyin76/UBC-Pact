@@ -94,6 +94,7 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Question CASCADE CONSTRAINTS`);
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
         }
@@ -114,7 +115,7 @@ async function initiateDemotable() {
         )
     `);
 
-            // Create PROFILE
+        // Create PROFILE
         await connection.execute(`
         CREATE TABLE Profile (
             ProfileID VARCHAR2(20) PRIMARY KEY,
@@ -161,6 +162,31 @@ async function initiateDemotable() {
             Assertive NUMBER
         )
     `);
+
+        // Create Pact
+        //     await connection.execute(`
+        //     CREATE TABLE PACT(
+        //         User_A_Email VARCHAR(255),
+        //         User_B_Email VARCHAR(255),
+        //         Compatibility_Score NUMERIC,
+        //         User_A_Contract VARCHAR(255),
+        //         User_B_Contract VARCHAR(255),
+        //         FOREIGN KEY (User_A_Email) REFERENCES User(Email),
+        //         FOREIGN KEY (User_B_Email) REFERENCES User(Email),
+        //         FOREIGN KEY (User_A_Contract) REFERENCES UserAContract(Contract),
+        //         FOREIGN KEY (User_B_Contract) REFERENCES UserBContract(Contract),
+        //         PRIMARY KEY (User_A_Email, User_B_Email)
+        //     )
+
+        // `);
+
+        await connection.execute(`
+        CREATE TABLE Question (
+            QuestionID CHAR(8) PRIMARY KEY, 
+            QuestionContent VARCHAR(2000)
+      )
+    `);
+
 
         return true;
     }).catch(() => {
