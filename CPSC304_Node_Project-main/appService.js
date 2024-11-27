@@ -91,8 +91,8 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE DEMOTABLE`);
             await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
-            await connection.execute(`DROP TABLE QUESTION CASCADE CONSTRAINTS`);
-            await connection.execute(`DROP TABLE PACT CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Question CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Pact CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
@@ -128,7 +128,7 @@ async function initiateDemotable() {
             FavouriteSport VARCHAR2(30),
             FavouriteMusicGenre VARCHAR2(30)
         )
-    `);
+    `)
 
         // Create PostalCodeCity 
         await connection.execute(`
