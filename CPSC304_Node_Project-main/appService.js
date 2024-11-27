@@ -94,7 +94,6 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Personality CASCADE CONSTRAINTS`);
-            await connection.execute(`DROP TABLE Pact CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Question CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Users CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserAContract CASCADE CONSTRAINTS`);
@@ -103,6 +102,7 @@ async function initiateDemotable() {
             await connection.execute(`DROP TABLE UserEmailGender CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserEmailPostalCode CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE UserAnswer CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE Pact CASCADE CONSTRAINTS`);
 
         } catch (err) {
             console.log('Table might not exist, proceeding to create...');
@@ -172,24 +172,6 @@ async function initiateDemotable() {
         )
     `);
 
-        // Create Pact
-        // TODO 
-        await connection.execute(`
-            CREATE TABLE Pact(
-                User_A_Email VARCHAR2(200),
-                User_B_Email VARCHAR2(200),
-                Compatibility_Score NUMERIC,
-                User_A_Contract VARCHAR2(255),
-                User_B_Contract VARCHAR2(255),
-                FOREIGN KEY (User_A_Email) REFERENCES Users(Email),
-                FOREIGN KEY (User_B_Email) REFERENCES Users(Email),
-                FOREIGN KEY (User_A_Contract) REFERENCES UserAContract(Contract),
-                FOREIGN KEY (User_B_Contract) REFERENCES UserBContract(Contract),
-                PRIMARY KEY (User_A_Email, User_B_Email)
-            )
-
-        `);
-
         // Create Question
         await connection.execute(`
         CREATE TABLE Question (
@@ -219,7 +201,7 @@ async function initiateDemotable() {
             CREATE TABLE UserAContract(
                 User_A_Email VARCHAR2(200) PRIMARY KEY,
                 Contract VARCHAR2(255),
-                FOREIGN KEY (User_A_Email) REFERENCES Users(Email),
+                FOREIGN KEY (User_A_Email) REFERENCES Users(Email)
             )
         
         `);
@@ -229,7 +211,7 @@ async function initiateDemotable() {
             CREATE TABLE UserBContract(
                 User_B_Email VARCHAR2(200) PRIMARY KEY,
                 Contract VARCHAR2(255),
-                FOREIGN KEY (User_B_Email) REFERENCES Users(Email),
+                FOREIGN KEY (User_B_Email) REFERENCES Users(Email)
             )
         
         `);
@@ -271,6 +253,23 @@ async function initiateDemotable() {
 	            FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE,
 	            FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID) ON DELETE CASCADE 
             )
+        `);
+
+        // Create Pact
+        await connection.execute(`
+            CREATE TABLE Pact(
+                User_A_Email VARCHAR2(200),
+                User_B_Email VARCHAR2(200),
+                Compatibility_Score NUMBER,
+                User_A_Contract VARCHAR2(200),
+                User_B_Contract VARCHAR2(200),
+                FOREIGN KEY (User_A_Email) REFERENCES Users(Email),
+                FOREIGN KEY (User_B_Email) REFERENCES Users(Email),
+                FOREIGN KEY (User_A_Contract) REFERENCES UserAContract(User_A_Email),
+                FOREIGN KEY (User_B_Contract) REFERENCES UserBContract(User_B_Email),
+                PRIMARY KEY (User_A_Email, User_B_Email)
+            )
+
         `);
 
         return true;
