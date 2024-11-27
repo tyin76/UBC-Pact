@@ -245,6 +245,57 @@ async function initiateDemotable() {
             )
         `);
 
+        // Create UserEmailGender table
+        await connection.execute(`
+            CREATE TABLE Mail (
+                MailID CHAR(20) PRIMARY KEY,
+                MailboxID VARCHAR2(255),
+                Email VARCHAR2(255), 
+                Message VARCHAR2(255),
+                FOREIGN KEY (MailboxID) REFERENCES Mailbox(MailboxID)
+            )
+        `); 
+
+        // Create UserAnswer table
+        await connection.execute(`
+            CREATE TABLE UserAnswer (
+	            AnswerID VARCHAR2(8) PRIMARY KEY, 
+  	            QuestionID VARCHAR2(8),
+	            AnswerValue NUMBER,
+            	Email VARCHAR2(255),
+	            FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE,
+	            FOREIGN KEY (QuestionID) REFERENCES Question(QuestionID) ON DELETE CASCADE 
+            )
+        `);
+
+        // Create Matches table
+        await connection.execute(`
+            CREATE TABLE Matches (
+	            User_Email_A VARCHAR2(255),
+	            User_Email_B VARCHAR2(255),
+	            MatchScore NUMBER,
+        	    PRIMARY KEY (User_Email_A, User_Email_B),
+        	    FOREIGN KEY (User_Email_A) REFERENCES Users(Email) ON DELETE CASCADE,
+	            FOREIGN KEY (User_Email_B) REFERENCES Users(Email) ON DELETE CASCADE
+            )
+        `);
+
+        // Create Pact
+        await connection.execute(`
+            CREATE TABLE Pact(
+                User_A_Email VARCHAR2(200),
+                User_B_Email VARCHAR2(200),
+                Compatibility_Score NUMBER,
+                User_A_Contract VARCHAR2(200),
+                User_B_Contract VARCHAR2(200),
+                FOREIGN KEY (User_A_Email) REFERENCES Users(Email),
+                FOREIGN KEY (User_B_Email) REFERENCES Users(Email),
+                FOREIGN KEY (User_A_Contract) REFERENCES UserAContract(User_A_Email),
+                FOREIGN KEY (User_B_Contract) REFERENCES UserBContract(User_B_Email),
+                PRIMARY KEY (User_A_Email, User_B_Email)
+            )
+
+        `);
 
         return true;
     }).catch(() => {
