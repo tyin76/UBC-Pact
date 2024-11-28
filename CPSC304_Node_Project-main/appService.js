@@ -353,8 +353,82 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function insertUser(email, name, gender, postalCode, nickName, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, trubulence) {
-    
+async function insertUser(email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, turbulence) {
+    return await withOracleDB(async (connection) => {
+        try {
+            // Insert into Mailbox
+            await connection.execute(
+                `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
+                [email, 0]
+            );
+
+            // Insert into Personality
+            await connection.execute(
+                `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive) 
+                 VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
+                [
+                    email,
+                    10 - extravertedness,
+                    extravertedness,
+                    intuitive,
+                    10 - intuitive,
+                    10 - feeling,
+                    feeling,
+                    10 - judging,
+                    judging,
+                    turbulence,
+                    10 - turbulence,
+                ]
+            );
+
+            // Insert into Profile
+            await connection.execute(
+                `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre) 
+                 VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+                [
+                    email,
+                    nickname,
+                    sexuality,
+                    dreamVacation,
+                    favHobby,
+                    favSport,
+                    favMusicGenre,
+                ]
+            );
+
+            // Insert into Users
+            await connection.execute(
+                `INSERT INTO Users (Email, Name, PersonalityID, ProfileID, MailBoxID) 
+                 VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
+                [email, name, email, email, email]
+            );
+
+            // Insert into UserGender
+            await connection.execute(
+                `INSERT INTO UserGender (Email, Gender) VALUES (:Email, :Gender)`,
+                [email, gender]
+            );
+
+            // Insert into UserPostalCode
+            await connection.execute(
+                `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
+                [email, postalCode]
+            );
+
+            // Insert into UserAge
+            await connection.execute(
+                `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+                [email, age]
+            );
+
+            await connection.commit();
+            return true;
+        } catch (error) {
+            console.error('Error inserting user:', error);
+            await connection.rollback();
+            return false;
+        }
+    });
 }
 
 async function insertTestData() {
@@ -427,5 +501,6 @@ module.exports = {
     insertDemotable,
     updateNameDemotable,
     countDemotable,
-    insertTestData
+    insertTestData,
+    insertUser
 };
