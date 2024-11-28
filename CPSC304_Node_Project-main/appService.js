@@ -169,7 +169,7 @@ async function initiateDemotable() {
         // Create PROFILE
         await connection.execute(`
         CREATE TABLE Profile (
-            ProfileID VARCHAR2(20) PRIMARY KEY,
+            ProfileID VARCHAR2(200) PRIMARY KEY,
             Name VARCHAR2(20),
             Sexuality VARCHAR2(10),
             DreamVacation VARCHAR2(50),
@@ -191,7 +191,7 @@ async function initiateDemotable() {
         // Create Mailbox 
         await connection.execute(`
         CREATE TABLE Mailbox (
-            MailboxID VARCHAR2(255) PRIMARY KEY,
+            MailboxID VARCHAR2(200) PRIMARY KEY,
             UnreadMail NUMBER
         )   
     `);
@@ -199,7 +199,7 @@ async function initiateDemotable() {
         // Create Personality 
         await connection.execute(`
         CREATE TABLE Personality (
-            PersonalityID VARCHAR2(8) PRIMARY KEY,
+            PersonalityID VARCHAR2(200) PRIMARY KEY,
             Introvertedness NUMBER,
             Extrovertedness NUMBER,
             Intuitive NUMBER, 
@@ -226,9 +226,9 @@ async function initiateDemotable() {
         CREATE TABLE Users (
             Email VARCHAR2(200) PRIMARY KEY,
             Name VARCHAR2(200),
-            PersonalityID VARCHAR2(8),
-            ProfileID VARCHAR2(20),
-            MailBoxID VARCHAR2(8),
+            PersonalityID VARCHAR2(200),
+            ProfileID VARCHAR2(200),
+            MailBoxID VARCHAR2(200),
             FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID) ON DELETE CASCADE,
             FOREIGN KEY (PersonalityID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
             FOREIGN KEY (MailBoxID) REFERENCES Mailbox(MailBoxID) ON DELETE CASCADE
@@ -285,7 +285,7 @@ async function initiateDemotable() {
         await connection.execute(`
             CREATE TABLE Mail (
                 MailID CHAR(20) PRIMARY KEY,
-                MailboxID VARCHAR2(255),
+                MailboxID VARCHAR2(200),
                 Email VARCHAR2(255), 
                 Message VARCHAR2(255),
                 FOREIGN KEY (MailboxID) REFERENCES Mailbox(MailboxID)
@@ -351,6 +351,10 @@ async function insertDemotable(id, name) {
     }).catch(() => {
         return false;
     });
+}
+
+async function insertUser(email, name, gender, postalCode, nickName, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, trubulence) {
+    
 }
 
 async function insertTestData() {
