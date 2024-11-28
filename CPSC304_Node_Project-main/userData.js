@@ -1,4 +1,5 @@
 async function createQuestions(connection) {
+
     // Introvertedness and extravertedness where this answer determines extravertedness
     await connection.execute(
         `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
@@ -23,7 +24,7 @@ async function createQuestions(connection) {
     // Judging and prospecting, where this answer determines judging
     await connection.execute(
         `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
-        { QuestionID: '4', QuestionContent: 'How often do plan out your week?' },
+        { QuestionID: '4', QuestionContent: 'How often do you plan out your week?' },
         { autoCommit: true }
     );
 
@@ -31,6 +32,69 @@ async function createQuestions(connection) {
     await connection.execute(
         `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
         { QuestionID: '5', QuestionContent: 'How often do you feel stressed when things do not go according to plan?' },
+        { autoCommit: true }
+    );
+
+    // Ask for Gender
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '6', QuestionContent: 'Please select your gender?' },
+        { autoCommit: true }
+    );
+
+    // Ask for Postal
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '7', QuestionContent: 'Please input your Postal Code' },
+        { autoCommit: true }
+    );
+
+    // Ask for Age
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '8', QuestionContent: 'Please enter your age' },
+        { autoCommit: true }
+    );
+
+    // Ask for Nickname
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '9', QuestionContent: 'Please enter your nickname' },
+        { autoCommit: true }
+    );
+
+    // Ask for Sexuality
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '10', QuestionContent: 'Please select your sexuality' },
+        { autoCommit: true }
+    );
+
+    // Ask for Dream Vacation
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '11', QuestionContent: 'Please specify your dream vacation' },
+        { autoCommit: true }
+    );
+
+    // Ask for Gender
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '12', QuestionContent: 'What is your favourite hobby?' },
+        { autoCommit: true }
+    );
+
+    // Ask for Gender
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '13', QuestionContent: 'What is your favourite sport?' },
+        { autoCommit: true }
+    );
+
+    // Ask for Gender
+    await connection.execute(
+        `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+        { QuestionID: '14', QuestionContent: 'What is your favourite music genre?' },
         { autoCommit: true }
     );
 
