@@ -199,7 +199,7 @@ async function countDemotable() {
 async function submitSurveyQuestionAnswers(event) {
     event.preventDefault();
 
-    const name = document.getElementById('insertName').value
+    const name = document.getElementById('insertNameSurvey').value
     const email = document.getElementById('insertEmail').value
     const likelyToGoOut = document.getElementById('question-1').value
     const gut = document.getElementById('question-2').value
