@@ -102,13 +102,14 @@ async function fetchDemotableFromDb() {
 async function fetchUsersTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
-            SELECT u.Email, u.Name, u.PersonalityID, u.ProfileID, u.MailBoxID, ug.Gender, upc.PostalCode, pCountry.Country, pCity.City, ua.Age
+            SELECT u.Email, u.Name, u.PersonalityID, u.ProfileID, u.MailBoxID, ug.Gender, upc.PostalCode, pCountry.Country, pCity.City, ua.Age, p.Name, p.Sexuality, p.DreamVacation, p.FavouriteHobby, p.FavouriteSport, p.FavouriteMusicGenre
             FROM Users u
             JOIN UserGender ug ON u.Email = ug.Email
             JOIN UserPostalCode upc ON u.Email = upc.Email
             JOIN PostalCodeCountry pCountry ON pCountry.PostalCode = upc.PostalCode
             JOIN PostalCodeCity pCity ON pCity.PostalCode = upc.PostalCode
             JOIN UserAge ua ON u.Email = ua.Email
+            JOIN Profile p ON  u.ProfileID = p.ProfileID
         `);
 
         console.log(result)
