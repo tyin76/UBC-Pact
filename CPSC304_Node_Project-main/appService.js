@@ -1,5 +1,19 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
+const {
+    insertFegiclyn,
+    insertTerence,
+    insertFegico,
+    insertPostalCodes,
+    insertJake, 
+    insertJaklyn,
+    insertTerelyn,
+    assignPostalCodes,
+    assignGenders,
+    assignMail,
+    createQuestions,
+    assignAge
+} = require('./userData');
 
 const envVariables = loadEnvFile('./.env');
 
@@ -85,11 +99,37 @@ async function fetchDemotableFromDb() {
     });
 }
 
+async function fetchUsersTableFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            SELECT u.Email, u.Name, u.PersonalityID, u.ProfileID, u.MailBoxID, ug.Gender, upc.PostalCode, pCountry.Country, pCity.City, ua.Age, p.Name, p.Sexuality, p.DreamVacation, p.FavouriteHobby, p.FavouriteSport, p.FavouriteMusicGenre
+            FROM Users u
+            JOIN UserGender ug ON u.Email = ug.Email
+            JOIN UserPostalCode upc ON u.Email = upc.Email
+            JOIN PostalCodeCountry pCountry ON pCountry.PostalCode = upc.PostalCode
+            JOIN PostalCodeCity pCity ON pCity.PostalCode = upc.PostalCode
+            JOIN UserAge ua ON u.Email = ua.Email
+            JOIN Profile p ON  u.ProfileID = p.ProfileID
+        `);
+
+        console.log(result)
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+/**
+ *             SELECT *
+            FROM Users u, PostalCode pc, PostalCodeCity pcc, UserPostalCode upc, UserGender ug
+            WHERE u.Email = upc.Email AND upc.PostalCode = pc.PostalCode AND upc.PostalCode = pcc.PostalCode AND ug.Email = u.Email
+ */
+
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
             await connection.execute(`DROP TABLE DEMOTABLE`);
-            await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE PostalCodeCountry CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
@@ -120,7 +160,7 @@ async function initiateDemotable() {
 
         // Create POSTALCODE
         await connection.execute(`
-        CREATE TABLE PostalCode (
+        CREATE TABLE PostalCodeCountry (
             PostalCode VARCHAR2(20) PRIMARY KEY,
             Country VARCHAR2(20)
         )
@@ -131,7 +171,6 @@ async function initiateDemotable() {
         CREATE TABLE Profile (
             ProfileID VARCHAR2(20) PRIMARY KEY,
             Name VARCHAR2(20),
-            Age INTEGER,
             Sexuality VARCHAR2(10),
             DreamVacation VARCHAR2(50),
             FavouriteHobby VARCHAR2(30),
@@ -190,11 +229,9 @@ async function initiateDemotable() {
             PersonalityID VARCHAR2(8),
             ProfileID VARCHAR2(20),
             MailBoxID VARCHAR2(8),
-            PostalCode VARCHAR2(20),
             FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID) ON DELETE CASCADE,
             FOREIGN KEY (PersonalityID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
-            FOREIGN KEY (MailBoxID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
-            FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
+            FOREIGN KEY (MailBoxID) REFERENCES Mailbox(MailBoxID) ON DELETE CASCADE
             ) 
     `);
 
@@ -205,7 +242,6 @@ async function initiateDemotable() {
                 Contract VARCHAR2(255),
                 FOREIGN KEY (User_A_Email) REFERENCES Users(Email)
             )
-        
         `);
 
         // Create User
@@ -236,7 +272,7 @@ async function initiateDemotable() {
             )
         `);
 
-        // Create UserGender table
+        // Create UserPostalCode table
         await connection.execute(`
             CREATE TABLE UserPostalCode (
                 Email VARCHAR2(200) PRIMARY KEY,
@@ -254,7 +290,7 @@ async function initiateDemotable() {
                 Message VARCHAR2(255),
                 FOREIGN KEY (MailboxID) REFERENCES Mailbox(MailboxID)
             )
-        `); 
+        `);
 
         // Create UserAnswer table
         await connection.execute(`
@@ -317,6 +353,45 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function insertTestData() {
+    return await withOracleDB(async (connection) => {
+        try {
+            // Creating the questions
+            await createQuestions(connection);
+
+            // Insert PostalCode first because a User needs to have a postal code
+            await insertPostalCodes(connection);
+
+            await insertFegiclyn(connection);
+            await insertTerence(connection);
+            await insertFegico(connection);
+            await insertJake(connection);
+            await insertJaklyn(connection);
+            await insertTerelyn(connection);
+
+            // Can only assign postal codes once users have been created.
+            await assignPostalCodes(connection);
+
+            // Can only assign genders once users have been created.
+            await assignGenders(connection);
+
+            // Can only assign mail once users have been created.
+            await assignMail(connection);
+
+            // Can only assign age once users have been created
+            await assignAge(connection);
+
+            console.log('Test user inserted successfully.');
+            return true;
+        } catch (error) {
+            console.error('Error inserting test user:', error);
+            await connection.rollback();
+            return false;
+        }
+    });
+}
+
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -343,8 +418,10 @@ async function countDemotable() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
+    fetchUsersTableFromDb,
     initiateDemotable,
     insertDemotable,
     updateNameDemotable,
-    countDemotable
+    countDemotable,
+    insertTestData
 };

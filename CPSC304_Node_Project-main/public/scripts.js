@@ -37,7 +37,7 @@ async function checkDbConnection() {
 }
 
 // Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
+async function fetchAndDemoTable() {
     const tableElement = document.getElementById('demotable');
     const tableBody = tableElement.querySelector('tbody');
 
@@ -62,6 +62,32 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+// Fetches data from the usersTable and displays it.
+async function fetchAndDisplayUsers() {
+    const tableElement = document.getElementById('usersTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/usersTable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const usersTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    usersTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // This function resets or initializes the demotable.
 async function resetDemotable() {
     const response = await fetch("/initiate-demotable", {
@@ -75,6 +101,22 @@ async function resetDemotable() {
         fetchTableData();
     } else {
         alert("Error initiating table!");
+    }
+}
+
+// This function inserts test user data.
+async function insertTestData() {
+    const response = await fetch("/insertTestData", {
+        method: 'POST'
+    });
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        const messageElement = document.getElementById('insertTestDataMsg');
+        messageElement.textContent = "test data inserted successfully!";
+        fetchTableData();
+    } else {
+        alert("Error inserting users!");
     }
 }
 
@@ -164,6 +206,7 @@ window.onload = function() {
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("insertTestData").addEventListener("click", insertTestData);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 
@@ -171,4 +214,5 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
+    fetchAndDemoTable();
 }

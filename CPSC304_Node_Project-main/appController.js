@@ -20,6 +20,11 @@ router.get('/demotable', async (req, res) => {
     res.json({ data: tableContent });
 });
 
+router.get('/usersTable', async (req, res) => {
+    const tableContent = await appService.fetchUsersTableFromDb();
+    res.json({ data: tableContent });
+});
+
 router.post("/initiate-demotable", async (req, res) => {
     const initiateResult = await appService.initiateDemotable();
     if (initiateResult) {
@@ -63,6 +68,15 @@ router.get('/count-demotable', async (req, res) => {
         });
     }
 });
+
+router.post('/insertTestData', async (req, res) => {
+    const insertResult = await appService.insertTestData();
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+})
 
 
 module.exports = router;
