@@ -10,7 +10,8 @@ const {
     assignPostalCodes,
     assignGenders,
     assignMail,
-    createQuestions
+    createQuestions,
+    assignAge
 } = require('./userData');
 
 const envVariables = loadEnvFile('./.env');
@@ -100,9 +101,13 @@ async function fetchDemotableFromDb() {
 async function fetchUsersTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`
-            SELECT u.Email, u.Name, u.PersonalityID, u.ProfileID, u.MailBoxID, ug.Gender
-            FROM Users u, UserGender ug
-            Where u.Email = ug.Email
+            SELECT u.Email, u.Name, u.PersonalityID, u.ProfileID, u.MailBoxID, ug.Gender, upc.PostalCode, pCountry.Country, pCity.City, ua.Age
+            FROM Users u
+            JOIN UserGender ug ON u.Email = ug.Email
+            JOIN UserPostalCode upc ON u.Email = upc.Email
+            JOIN PostalCodeCountry pCountry ON pCountry.PostalCode = upc.PostalCode
+            JOIN PostalCodeCity pCity ON pCity.PostalCode = upc.PostalCode
+            JOIN UserAge ua ON u.Email = ua.Email
         `);
 
         console.log(result)
@@ -122,7 +127,7 @@ async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
             await connection.execute(`DROP TABLE DEMOTABLE`);
-            await connection.execute(`DROP TABLE PostalCode CASCADE CONSTRAINTS`);
+            await connection.execute(`DROP TABLE PostalCodeCountry CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE PostalCodeCity CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Profile CASCADE CONSTRAINTS`);
             await connection.execute(`DROP TABLE Mailbox CASCADE CONSTRAINTS`);
@@ -153,7 +158,7 @@ async function initiateDemotable() {
 
         // Create POSTALCODE
         await connection.execute(`
-        CREATE TABLE PostalCode (
+        CREATE TABLE PostalCodeCountry (
             PostalCode VARCHAR2(20) PRIMARY KEY,
             Country VARCHAR2(20)
         )
@@ -164,7 +169,6 @@ async function initiateDemotable() {
         CREATE TABLE Profile (
             ProfileID VARCHAR2(20) PRIMARY KEY,
             Name VARCHAR2(20),
-            Age INTEGER,
             Sexuality VARCHAR2(10),
             DreamVacation VARCHAR2(50),
             FavouriteHobby VARCHAR2(30),
@@ -371,6 +375,9 @@ async function insertTestData() {
 
             // Can only assign mail once users have been created.
             await assignMail(connection);
+
+            // Can only assign age once users have been created
+            await assignAge(connection);
 
             console.log('Test user inserted successfully.');
             return true;

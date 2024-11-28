@@ -38,13 +38,13 @@ async function createQuestions(connection) {
 
 async function insertPostalCodes(connection) {
     await connection.execute(
-        `INSERT INTO PostalCode (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+        `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
         { PostalCode: '1', Country: 'Canada' },
         { autoCommit: true }
     );
 
     await connection.execute(
-        `INSERT INTO PostalCode (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+        `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
         { PostalCode: '2', Country: 'USA' },
         { autoCommit: true }
     );
@@ -58,6 +58,45 @@ async function insertPostalCodes(connection) {
     await connection.execute(
         `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
         { PostalCode: '2', City: 'Texas' },
+        { autoCommit: true }
+    );
+}
+
+async function assignAge(connection) {
+
+    await connection.execute(
+        `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+        { Email: 'terence@gmail.com', Age: '20' },
+        { autoCommit: true }
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+        { Email: 'jake@gmail.com', Age: '20' },
+        { autoCommit: true }
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+        { Email: 'fegico@gmail.com', Age: '20' },
+        { autoCommit: true }
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+        { Email: 'jaklyn@gmail.com', Age: '23' },
+        { autoCommit: true }
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+        { Email: 'terelyn@gmail.com', Age: '24' },
+        { autoCommit: true }
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAge (Email, Age) VALUES (:Email, :Age)`,
+        { Email: 'fegiclyn@gmail.com', Age: '25' },
         { autoCommit: true }
     );
 }
@@ -232,12 +271,11 @@ async function insertFegiclyn(connection) {
 
     // Insert Profile first because a User needs to have a profile code
     await connection.execute(
-        `INSERT INTO Profile (ProfileID, Name, Age, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
-                    VALUES (:ProfileID, :Name, :Age, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+        `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
+                    VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '1',
             Name: 'Feg Feg',
-            Age: 25,
             Sexuality: 'Straight',
             DreamVacation: 'I would love to go to vancouver.',
             FavouriteHobby: 'I love playing tennis',
@@ -293,12 +331,11 @@ async function insertTerence(connection) {
 
     // Insert Profile first because a User needs to have a profile code
     await connection.execute(
-        `INSERT INTO Profile (ProfileID, Name, Age, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
-        VALUES (:ProfileID, :Name, :Age, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+        `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
+        VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '2',
             Name: 'Ter Bear',
-            Age: 20,
             Sexuality: 'Gay',
             DreamVacation: 'Middle east',
             FavouriteHobby: 'I love league',
@@ -355,12 +392,11 @@ async function insertFegico(connection) {
 
     // Insert Profile first because a User needs to have a profile code
     await connection.execute(
-        `INSERT INTO Profile (ProfileID, Name, Age, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
-        VALUES (:ProfileID, :Name, :Age, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+        `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
+        VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '3',
             Name: 'Fegico',
-            Age: 20,
             Sexuality: 'Straight',
             DreamVacation: 'Taiwan',
             FavouriteHobby: 'I love guitar',
@@ -416,12 +452,11 @@ async function insertJake(connection) {
 
     // Insert Profile first because a User needs to have a profile code
     await connection.execute(
-        `INSERT INTO Profile (ProfileID, Name, Age, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
-        VALUES (:ProfileID, :Name, :Age, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+        `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
+        VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '4',
             Name: 'Ja Ja',
-            Age: 20,
             Sexuality: 'Straight',
             DreamVacation: 'Hawaii',
             FavouriteHobby: 'sleep',
@@ -477,12 +512,11 @@ async function insertJaklyn(connection) {
 
     // Insert Profile first because a User needs to have a profile code
     await connection.execute(
-        `INSERT INTO Profile (ProfileID, Name, Age, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
-        VALUES (:ProfileID, :Name, :Age, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+        `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
+        VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '5',
             Name: 'Jyln',
-            Age: 23,
             Sexuality: 'Straight',
             DreamVacation: 'Italy',
             FavouriteHobby: 'Dance',
@@ -538,12 +572,11 @@ async function insertTerelyn(connection) {
 
     // Insert Profile first because a User needs to have a profile code
     await connection.execute(
-        `INSERT INTO Profile (ProfileID, Name, Age, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
-        VALUES (:ProfileID, :Name, :Age, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
+        `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
+        VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '6',
             Name: 'Tylin',
-            Age: 24,
             Sexuality: 'Straight',
             DreamVacation: 'Greece',
             FavouriteHobby: 'Legos',
@@ -606,5 +639,6 @@ module.exports = {
     assignPostalCodes,
     assignGenders,
     assignMail,
-    createQuestions
+    createQuestions,
+    assignAge
 };
