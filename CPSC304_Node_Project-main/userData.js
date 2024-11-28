@@ -399,7 +399,7 @@ async function insertTerence(connection) {
         VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
             ProfileID: '2',
-            Name: 'Ter Bear',
+            Name: 'Terbear',
             Sexuality: 'Gay',
             DreamVacation: 'Middle east',
             FavouriteHobby: 'I love league',
