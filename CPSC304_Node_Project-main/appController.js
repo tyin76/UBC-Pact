@@ -65,6 +65,17 @@ router.post("/updateUser", async (req, res) => {
     }
 });
 
+router.delete("/deleteUser", async (req, res) => {
+    const {email} = req.body;
+
+    const deleteResult = await appService.deleteUser(email);
+    if (deleteResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
     const updateResult = await appService.updateNameDemotable(oldName, newName);

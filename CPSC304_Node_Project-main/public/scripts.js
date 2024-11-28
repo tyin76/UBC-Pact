@@ -196,6 +196,33 @@ async function countDemotable() {
     }
 }
 
+async function deleteUserFromUserTable(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('emailOfUserToDelete').value;
+
+    const response = await fetch("/deleteUser", {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+        })
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        const message = document.getElementById('userDeleteResult')
+        message.textContent = "User deleted successfully!";
+        fetchTableData();
+    } else {
+        const errorMessage = responseData.errorMessage
+        console.error("Error:", errorMessage);
+        alert("Error deleting user!");
+    }
+}
+
 async function updateUserProfile(event) {
     event.preventDefault();
 
@@ -308,6 +335,7 @@ window.onload = function () {
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
     document.getElementById("updateProfile").addEventListener("submit", updateUserProfile)
+    document.getElementById("deleteUserFromTableForm").addEventListener("submit", deleteUserFromUserTable);
 };
 
 // General function to refresh the displayed table data. 

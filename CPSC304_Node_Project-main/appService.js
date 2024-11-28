@@ -351,34 +351,54 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function updateProfile(email, fieldToChange, value) { 
-  return await withOracleDB(async (connection) => { 
-    if (!['Name', 'Sexuality', 'DreamVacation', 'FavouriteHobby', 'FavouriteSport', 'FavouriteMusicGenre'].includes(fieldToChange)) { 
-      throw Error('Invalid field to update for profile'); 
-    } 
-    try { 
-      console.log('Updating profile', { email, fieldToChange, value });
-      const result = await connection.execute( 
-        `UPDATE Profile
-        SET ${fieldToChange}=:value
-        WHERE ProfileID=:email`, 
-        [value, email],
-        { autoCommit: true }
-      ); 
+async function deleteUser(email) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            DELETE FROM Users
+            WHERE ProfileID = :email`,
+            [email],
+            { autoCommit: true }
+        );
 
-      if (result.rowsAffected === 0) {
-        console.error(`No user found with email: ${email}`);
+        if (result.rowsAffected === 0) {
+            console.error(`No user found with email: ${email}`);
+            return false;
+        }
+
+        return true;
+    }).catch(() => {
         return false;
-      }
+    });
+}
 
-      return true;
-    } catch (error) { 
-      console.error('Error updating profile:', error); 
-      console.error('Error stack:', error.stack);
-      await connection.rollback(); 
-      return false; 
-    } 
-  }); 
+async function updateProfile(email, fieldToChange, value) {
+    return await withOracleDB(async (connection) => {
+        if (!['Name', 'Sexuality', 'DreamVacation', 'FavouriteHobby', 'FavouriteSport', 'FavouriteMusicGenre'].includes(fieldToChange)) {
+            throw Error('Invalid field to update for profile');
+        }
+        try {
+            console.log('Updating profile', { email, fieldToChange, value });
+            const result = await connection.execute(
+                `UPDATE Profile
+        SET ${fieldToChange}=:value
+        WHERE ProfileID=:email`,
+                [value, email],
+                { autoCommit: true }
+            );
+
+            if (result.rowsAffected === 0) {
+                console.error(`No user found with email: ${email}`);
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            console.error('Error stack:', error.stack);
+            await connection.rollback();
+            return false;
+        }
+    });
 }
 
 async function insertUser(email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, turbulence) {
@@ -561,5 +581,6 @@ module.exports = {
     countDemotable,
     insertTestData,
     insertUser,
-    updateProfile
+    updateProfile,
+    deleteUser
 };
