@@ -45,8 +45,8 @@ router.post("/insert-demotable", async (req, res) => {
 });
 
 router.post("/submit-survey", async (req, res) => {
-    const { email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, trubulence } = req.body;
-    const insertResult = await appService.insertUser(email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, trubulence);
+    const { email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, turbulence } = req.body;
+    const insertResult = await appService.insertUser(email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, turbulence);
     if (insertResult) {
         res.json({ success: true });
     } else {

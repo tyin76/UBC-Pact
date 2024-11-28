@@ -199,7 +199,7 @@ async function countDemotable() {
 async function submitSurveyQuestionAnswers(event) {
     event.preventDefault();
 
-    const name = document.getElementById('inseertName').value
+    const name = document.getElementById('insertName').value
     const email = document.getElementById('insertEmail').value
     const likelyToGoOut = document.getElementById('question-1').value
     const gut = document.getElementById('question-2').value
@@ -214,9 +214,9 @@ async function submitSurveyQuestionAnswers(event) {
     const vacation = document.getElementById('question-11').value
     const hobby = document.getElementById('question-12').value
     const sport = document.getElementById('question-13').value
-    const musicGenre = document.getElementById('question-14')
+    const musicGenre = document.getElementById('question-14').value
 
-    const response = await fetch('/submit-survey', {
+    const response = await fetch("/submit-survey", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -243,12 +243,12 @@ async function submitSurveyQuestionAnswers(event) {
 
 
     const responseData = await response.json();
-    const message = document.getElementById('addUserUpdateMsg')
-
     if (responseData.success) {
-        message.textContent = "Added User Successfully!"
+        const message = document.getElementById('addUserUpdateMsg')
+        message.textContent = "User inserted successfully!";
+        fetchTableData();
     } else {
-        alert("Error adding User");
+        alert("Error inserting users!");
     }
 }
 
@@ -275,7 +275,7 @@ window.onload = function () {
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("insertTestData").addEventListener("click", insertTestData);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
-    document.getElementById("survey-questions").addEventListener("click", submitSurveyQuestionAnswers)
+    document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
 };
 
 // General function to refresh the displayed table data. 
