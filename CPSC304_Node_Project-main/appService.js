@@ -374,16 +374,23 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                 city = "Victoria";
             }
 
+            try {
+                await connection.execute(
+                    `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+                    [postalCode, country]
+                );
 
-            await connection.execute(
-                `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
-                [postalCode, country]
-            );
-
-            await connection.execute(
-                `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
-                [postalCode, city]
-            );
+                await connection.execute(
+                    `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
+                    [postalCode, city]
+                );
+            } catch(e) {
+                if (e.errorNum === 1) {
+                    console.log("Postal codes already inputted, skipping.");
+                } else {
+                    throw e;
+                }
+            }   
 
             // Insert into Personality
             await connection.execute(
