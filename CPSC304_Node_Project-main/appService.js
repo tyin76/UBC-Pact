@@ -184,7 +184,7 @@ async function initiateDemotable() {
         CREATE TABLE PostalCodeCity (
             PostalCode VARCHAR2(20) PRIMARY KEY,
             City VARCHAR2(50),
-            FOREIGN KEY (PostalCode) REFERENCES PostalCode(PostalCode) ON DELETE CASCADE
+            FOREIGN KEY (PostalCode) REFERENCES PostalCodeCountry(PostalCode) ON DELETE CASCADE
         )
     `);
 
