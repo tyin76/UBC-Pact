@@ -1,6 +1,17 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
-const { insertFegiclyn, insertTerence, insertFegico, insertPostalCodes, insertJake, insertJaklyn, insertTerelyn, assignPostalCodes, assignGenders } = require('./userData');
+const {
+    insertFegiclyn,
+    insertTerence,
+    insertFegico,
+    insertPostalCodes,
+    insertJake, insertJaklyn,
+    insertTerelyn,
+    assignPostalCodes,
+    assignGenders,
+    assignMail,
+    createQuestions
+} = require('./userData');
 
 const envVariables = loadEnvFile('./.env');
 
@@ -85,6 +96,27 @@ async function fetchDemotableFromDb() {
         return [];
     });
 }
+
+async function fetchUsersTableFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            SELECT u.Email, u.Name, u.PersonalityID, u.ProfileID, u.MailBoxID, ug.Gender
+            FROM Users u, UserGender ug
+            Where u.Email = ug.Email
+        `);
+
+        console.log(result)
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+/**
+ *             SELECT *
+            FROM Users u, PostalCode pc, PostalCodeCity pcc, UserPostalCode upc, UserGender ug
+            WHERE u.Email = upc.Email AND upc.PostalCode = pc.PostalCode AND upc.PostalCode = pcc.PostalCode AND ug.Email = u.Email
+ */
 
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
@@ -191,10 +223,9 @@ async function initiateDemotable() {
             PersonalityID VARCHAR2(8),
             ProfileID VARCHAR2(20),
             MailBoxID VARCHAR2(8),
-            PostalCode VARCHAR2(20),
             FOREIGN KEY (ProfileID) REFERENCES Profile(ProfileID) ON DELETE CASCADE,
             FOREIGN KEY (PersonalityID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE,
-            FOREIGN KEY (MailBoxID) REFERENCES Personality(PersonalityID) ON DELETE CASCADE
+            FOREIGN KEY (MailBoxID) REFERENCES Mailbox(MailBoxID) ON DELETE CASCADE
             ) 
     `);
 
@@ -205,7 +236,6 @@ async function initiateDemotable() {
                 Contract VARCHAR2(255),
                 FOREIGN KEY (User_A_Email) REFERENCES Users(Email)
             )
-        
         `);
 
         // Create User
@@ -254,7 +284,7 @@ async function initiateDemotable() {
                 Message VARCHAR2(255),
                 FOREIGN KEY (MailboxID) REFERENCES Mailbox(MailboxID)
             )
-        `); 
+        `);
 
         // Create UserAnswer table
         await connection.execute(`
@@ -320,6 +350,9 @@ async function insertDemotable(id, name) {
 async function insertTestData() {
     return await withOracleDB(async (connection) => {
         try {
+            // Creating the questions
+            await createQuestions(connection);
+
             // Insert PostalCode first because a User needs to have a postal code
             await insertPostalCodes(connection);
 
@@ -330,11 +363,14 @@ async function insertTestData() {
             await insertJaklyn(connection);
             await insertTerelyn(connection);
 
-            // Can only assign postal codes once a users have been created.
+            // Can only assign postal codes once users have been created.
             await assignPostalCodes(connection);
 
-            // Can only assign genders once a users have been created.
+            // Can only assign genders once users have been created.
             await assignGenders(connection);
+
+            // Can only assign mail once users have been created.
+            await assignMail(connection);
 
             console.log('Test user inserted successfully.');
             return true;
@@ -373,6 +409,7 @@ async function countDemotable() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
+    fetchUsersTableFromDb,
     initiateDemotable,
     insertDemotable,
     updateNameDemotable,

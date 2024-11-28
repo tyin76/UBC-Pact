@@ -37,7 +37,7 @@ async function checkDbConnection() {
 }
 
 // Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
+async function fetchAndDemoTable() {
     const tableElement = document.getElementById('demotable');
     const tableBody = tableElement.querySelector('tbody');
 
@@ -54,6 +54,32 @@ async function fetchAndDisplayUsers() {
     }
 
     demotableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Fetches data from the usersTable and displays it.
+async function fetchAndDisplayUsers() {
+    const tableElement = document.getElementById('usersTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/usersTable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const usersTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    usersTableContent.forEach(user => {
         const row = tableBody.insertRow();
         user.forEach((field, index) => {
             const cell = row.insertCell(index);
@@ -188,4 +214,5 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
+    fetchAndDemoTable();
 }
