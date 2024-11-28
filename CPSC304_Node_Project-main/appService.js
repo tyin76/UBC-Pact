@@ -5,7 +5,7 @@ const {
     insertTerence,
     insertFegico,
     insertPostalCodes,
-    insertJake, 
+    insertJake,
     insertJaklyn,
     insertTerelyn,
     assignPostalCodes,
@@ -375,15 +375,15 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
             }
 
 
-           await connection.execute(
-                    `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
-                    [postalCode, country]
-                );
+            await connection.execute(
+                `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+                [postalCode, country]
+            );
 
             await connection.execute(
-                    `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
-                    [postalCode, city]
-                );
+                `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
+                [postalCode, city]
+            );
 
             // Insert into Personality
             await connection.execute(
