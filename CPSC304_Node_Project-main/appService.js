@@ -362,16 +362,18 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                 [email, 0]
             );
 
+
             let city;
-            const country = "Canada"
+            const country = "Canada";
 
             if (postalCode === "V6T") {
-                city = 'Vancouver'
+                city = "Vancouver";
             } else if (postalCode === "V5A") {
-                city = 'Burnaby'
+                city = "Burnaby";
             } else {
-                city = "Victoria"
+                city = "Victoria";
             }
+
 
             await connection.execute(
                 `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
