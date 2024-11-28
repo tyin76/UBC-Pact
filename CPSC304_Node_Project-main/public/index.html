@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
@@ -10,19 +11,21 @@
 
     <title>Database Application</title>
 </head>
+
 <body>
     <!-- ===================================================================================== -->
     <!-- Display the current status of the database connection. 
          !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
          -->
-    <h1>Database Connection Status: 
+    <h1>Database Connection Status:
         <!-- An in-line placeholder to display connection status. -->
         <span id="dbStatus"> </span>
         <!-- A loading GIF, will be hided once get the status. -->
         <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
     </h1>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
 
     <!-- Show 'UsersTable'. 
         Data will be fetched and inserted here dynamically using JavaScript. -->
@@ -53,11 +56,102 @@
         </tbody>
     </table>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
+
+    <h2> Survey Questions </h2>
+    <form id="survey-questions">
+        <!-- ID Field -->
+        Name: <input type="text" id="insertNameSurvey" placeholder="Enter name" required> <br><br>
+
+        <!-- Name Field -->
+        Email: <input type="text" id="insertEmail" placeholder="Enter Email" maxlength="30"> <br><br>
+
+        <!-- Question 1 - Slider -->
+        How likely are you to go to a social event after a long day of school?
+        <input type="range" id="question-1" name="question-1" min="1" max="10" value="1" required>
+        <span id="question-1-value">1</span> <br><br>
+
+        <!-- Question 2 - Slider -->
+        How often do you trust your gut when making decisions?
+        <input type="range" id="question-2" name="question-2" min="1" max="10" value="1" required>
+        <span id="question-2-value">1</span> <br><br>
+
+        <!-- Question 3 - Slider -->
+        How often do you prioritize your emotions and how others may feel when making decisions?
+        <input type="range" id="question-3" name="question-3" min="1" max="10" value="1" required>
+        <span id="question-3-value">1</span> <br><br>
+
+        <!-- Question 4 - Slider -->
+        How often do you plan out your week?
+        <input type="range" id="question-4" name="question-4" min="1" max="10" value="1" required>
+        <span id="question-4-value">1</span> <br><br>
+
+        <!-- Question 5 - Slider -->
+        How often do you feel stressed when things do not go according to plan?
+        <input type="range" id="question-5" name="question-5" min="1" max="10" value="1" required>
+        <span id="question-5-value">1</span> <br><br>
+
+        <!-- Question 6 -->
+        Please select your gender:
+        <select id="question-6" name="question-6" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select> <br><br>
+
+
+        <!-- Question 7 -->
+        Please input your Postal Code:
+        <select id="question-7" name="question-7" required>
+            <option value="V6T">V6T</option>
+            <option value="V5A">V5A</option>
+        </select> <br><br>
+
+        <!-- Question 8 -->
+        Please enter your age:
+        <input type="number" id="question-8" placeholder="Enter your age" required> <br><br>
+
+        <!-- Question 9 -->
+        Please enter your nickname:
+        <input type="text" id="question-9" placeholder="Enter your nickname" required> <br><br>
+
+        <!-- Question 10 -->
+        Please select your sexuality:
+        <select id="question-10" name="question-10" required>
+            <option value="Hetero">Hetero</option>
+            <option value="Homosexual">Homosexual</option>
+        </select> <br><br>
+
+        <!-- Question 11 -->
+        Please specify your dream vacation:
+        <input type="text" id="question-11" placeholder="Enter your dream vacation" required> <br><br>
+
+        <!-- Question 12 -->
+        What is your favourite hobby?
+        <input type="text" id="question-12" placeholder="Enter your favourite hobby" required> <br><br>
+
+        <!-- Question 13 -->
+        What is your favourite sport?
+        <input type="text" id="question-13" placeholder="Enter your favourite sport" required> <br><br>
+
+        <!-- Question 14 -->
+        What is your favourite music genre?
+        <input type="text" id="question-14" placeholder="Enter your favourite music genre" required> <br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button> <br>
+    </form>
+
+    <div id="addUserUpdateMsg"></div>
+
+
+
 
     <!-- Show 'Demotable'. 
         Data will be fetched and inserted here dynamically using JavaScript. -->
     <h2>Show Demotable</h2>
+
+
     <table id="demotable" border="1">
         <thead>
             <tr>
@@ -70,15 +164,18 @@
         </tbody>
     </table>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
 
     <h2>Reset Demotable</h2>
-    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
+    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you
+        MUST use reset</p>
     <button id="resetDemotable"> reset </button> <br>
     <!-- A placeholder to display messages related to the reset operation. -->
     <div id="resetResultMsg"></div>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
 
     <h2>Insert test data</h2>
     <p>If you wish to insert test data</p>
@@ -86,7 +183,8 @@
     <!-- A placeholder to display messages related to the reset operation. -->
     <div id="insertTestDataMsg"></div>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
 
     <h2> Insert Values into DemoTable </h2>
     <form id="insertDemotable">
@@ -97,7 +195,8 @@
     </form>
     <div id="insertResultMsg"></div>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
 
     <h2>Update Name in DemoTable</h2>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
@@ -110,7 +209,8 @@
     <!-- A placeholder to display messages related to the update operation. -->
     <div id="updateNameResultMsg"></div>
 
-    <br><hr><br> <!-- ========================================================================= -->
+    <br>
+    <hr><br> <!-- ========================================================================= -->
 
     <h2>Count the Tuples in DemoTable</h2>
     <button id="countDemotable"> count </button> <br><br>
@@ -121,4 +221,5 @@
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
     <script src="scripts.js"></script>
 </body>
+
 </html>

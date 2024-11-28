@@ -28,12 +28,12 @@ async function checkDbConnection() {
     statusElem.style.display = 'inline';
 
     response.text()
-    .then((text) => {
-        statusElem.textContent = text;
-    })
-    .catch((error) => {
-        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
-    });
+        .then((text) => {
+            statusElem.textContent = text;
+        })
+        .catch((error) => {
+            statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+        });
 }
 
 // Fetches data from the demotable and displays it.
@@ -196,11 +196,78 @@ async function countDemotable() {
     }
 }
 
+async function submitSurveyQuestionAnswers(event) {
+    event.preventDefault();
 
+    const name = document.getElementById('insertNameSurvey').value
+    const email = document.getElementById('insertEmail').value
+    const likelyToGoOut = document.getElementById('question-1').value
+    const gut = document.getElementById('question-2').value
+    const emotions = document.getElementById('question-3').value
+    const planWeek = document.getElementById('question-4').value
+    const stressed = document.getElementById('question-5').value
+    const gender = document.getElementById('question-6').value
+    const PostalCode = document.getElementById('question-7').value
+    const age = document.getElementById('question-8').value
+    const nickname = document.getElementById('question-9').value
+    const sexuality = document.getElementById('question-10').value
+    const vacation = document.getElementById('question-11').value
+    const hobby = document.getElementById('question-12').value
+    const sport = document.getElementById('question-13').value
+    const musicGenre = document.getElementById('question-14').value
+
+    const response = await fetch("/submit-survey", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            name: name,
+            gender: gender,
+            age: age,
+            postalCode: PostalCode,
+            nickname: nickname,
+            sexuality: sexuality,
+            dreamVacation: vacation,
+            favHobby: hobby,
+            favSport: sport,
+            favMusicGenre: musicGenre,
+            extravertedness: likelyToGoOut,
+            intuitive: gut,
+            feeling: emotions,
+            judging: planWeek,
+            turbulence: stressed
+        })
+    });
+
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        const message = document.getElementById('addUserUpdateMsg')
+        message.textContent = "User inserted successfully!";
+        fetchTableData();
+    } else {
+        alert("Error inserting users!");
+    }
+}
+
+
+// slider logic
+document.addEventListener("DOMContentLoaded", () => {
+    // Update slider value display
+    const sliders = document.querySelectorAll('input[type="range"]');
+    sliders.forEach(slider => {
+        const valueSpan = document.getElementById(slider.id + '-value');
+        slider.addEventListener('input', () => {
+            valueSpan.textContent = slider.value;
+        });
+    });
+});
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
-window.onload = function() {
+window.onload = function () {
     checkDbConnection();
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
@@ -208,6 +275,7 @@ window.onload = function() {
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("insertTestData").addEventListener("click", insertTestData);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
 };
 
 // General function to refresh the displayed table data. 

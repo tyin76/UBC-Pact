@@ -106,8 +106,8 @@ async function fetchUsersTableFromDb() {
             FROM Users u
             JOIN UserGender ug ON u.Email = ug.Email
             JOIN UserPostalCode upc ON u.Email = upc.Email
-            JOIN PostalCodeCountry pCountry ON pCountry.PostalCode = upc.PostalCode
-            JOIN PostalCodeCity pCity ON pCity.PostalCode = upc.PostalCode
+            LEFT JOIN PostalCodeCountry pCountry ON pCountry.PostalCode = upc.PostalCode
+            LEFT JOIN PostalCodeCity pCity ON pCity.PostalCode = upc.PostalCode
             JOIN UserAge ua ON u.Email = ua.Email
             JOIN Profile p ON  u.ProfileID = p.ProfileID
         `);
@@ -361,6 +361,17 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                 `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
                 [email, 0]
             );
+
+
+        //    await connection.execute(
+        //             `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+        //             [postalCode, 'Canada']
+        //         );
+
+        //     await connection.execute(
+        //             `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
+        //             [postalCode, 'Vancouver']
+        //         );
 
             // Insert into Personality
             await connection.execute(
