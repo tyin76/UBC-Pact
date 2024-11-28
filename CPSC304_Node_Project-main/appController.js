@@ -54,6 +54,17 @@ router.post("/submit-survey", async (req, res) => {
     }
 });
 
+router.post("/updateUser", async (req, res) => {
+    const {email, fieldToChange, value} = req.body;
+
+    const updateResult = await appService.updateProfile(email, fieldToChange, value);
+    if (updateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
     const updateResult = await appService.updateNameDemotable(oldName, newName);

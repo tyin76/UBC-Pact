@@ -196,6 +196,37 @@ async function countDemotable() {
     }
 }
 
+async function updateUserProfile(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('userProfileToUpdate').value;
+    const fieldToChange = document.getElementById('userProfileSelection').value;
+    const value = document.getElementById('userProfileNewValue').value;
+
+    const response = await fetch("/updateUser", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            fieldToChange: fieldToChange,
+            value: value
+        })
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        const message = document.getElementById('updateProfileResultMsg')
+        message.textContent = "User updated successfully!";
+        fetchTableData();
+    } else {
+        const errorMessage = responseData.errorMessage
+        console.error("Error:", errorMessage);
+        alert("Error updating user profile!");
+    }
+}
+
 async function submitSurveyQuestionAnswers(event) {
     event.preventDefault();
 
@@ -276,6 +307,7 @@ window.onload = function () {
     document.getElementById("insertTestData").addEventListener("click", insertTestData);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
+    document.getElementById("updateProfile").addEventListener("submit", updateUserProfile)
 };
 
 // General function to refresh the displayed table data. 

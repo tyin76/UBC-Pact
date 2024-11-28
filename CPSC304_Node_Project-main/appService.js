@@ -111,8 +111,6 @@ async function fetchUsersTableFromDb() {
             JOIN UserAge ua ON u.Email = ua.Email
             JOIN Profile p ON  u.ProfileID = p.ProfileID
         `);
-
-        console.log(result)
         return result.rows;
     }).catch(() => {
         return [];
@@ -170,12 +168,12 @@ async function initiateDemotable() {
         await connection.execute(`
         CREATE TABLE Profile (
             ProfileID VARCHAR2(200) PRIMARY KEY,
-            Name VARCHAR2(20),
+            Name VARCHAR2(50),
             Sexuality VARCHAR2(10),
             DreamVacation VARCHAR2(50),
-            FavouriteHobby VARCHAR2(30),
-            FavouriteSport VARCHAR2(30),
-            FavouriteMusicGenre VARCHAR2(30)
+            FavouriteHobby VARCHAR2(50),
+            FavouriteSport VARCHAR2(50),
+            FavouriteMusicGenre VARCHAR2(50)
         )
     `);
 
@@ -353,6 +351,36 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function updateProfile(email, fieldToChange, value) { 
+  return await withOracleDB(async (connection) => { 
+    if (!['Name', 'Sexuality', 'DreamVacation', 'FavouriteHobby', 'FavouriteSport', 'FavouriteMusicGenre'].includes(fieldToChange)) { 
+      throw Error('Invalid field to update for profile'); 
+    } 
+    try { 
+      console.log('Updating profile', { email, fieldToChange, value });
+      const result = await connection.execute( 
+        `UPDATE Profile
+        SET ${fieldToChange}=:value
+        WHERE ProfileID=:email`, 
+        [value, email],
+        { autoCommit: true }
+      ); 
+
+      if (result.rowsAffected === 0) {
+        console.error(`No user found with email: ${email}`);
+        return false;
+      }
+
+      return true;
+    } catch (error) { 
+      console.error('Error updating profile:', error); 
+      console.error('Error stack:', error.stack);
+      await connection.rollback(); 
+      return false; 
+    } 
+  }); 
+}
+
 async function insertUser(email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, turbulence) {
     return await withOracleDB(async (connection) => {
         try {
@@ -384,13 +412,13 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                     `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
                     [postalCode, city]
                 );
-            } catch(e) {
+            } catch (e) {
                 if (e.errorNum === 1) {
                     console.log("Postal codes already inputted, skipping.");
                 } else {
                     throw e;
                 }
-            }   
+            }
 
             // Insert into Personality
             await connection.execute(
@@ -532,5 +560,6 @@ module.exports = {
     updateNameDemotable,
     countDemotable,
     insertTestData,
-    insertUser
+    insertUser,
+    updateProfile
 };

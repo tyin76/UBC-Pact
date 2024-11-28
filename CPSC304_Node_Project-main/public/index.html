@@ -213,6 +213,27 @@
     <br>
     <hr><br> <!-- ========================================================================= -->
 
+    <h2>Update Profile for a user</h2>
+    <form id="updateProfile">
+        Email of user to update: <input type="text" id="userProfileToUpdate" placeholder="Enter user email here" required> <br><br>
+        Please select which prompt you'd like to update:
+        <select id="userProfileSelection" name="userProfileSelection" required>
+            <option value="Name">Nickname</option>
+            <option value="DreamVacation">Dream Vacation</option>
+            <option value="FavouriteHobby">Favourite Hobby</option>
+            <option value="FavouriteSport">Favourite Sport</option>
+            <option value="FavouriteMusicGenre">Favourite Music Genre</option>
+        </select> <br><br>
+        Enter new value: <input type="text" id="userProfileNewValue" placeholder="Enter new value here" maxlength="50"> <br><br>
+
+        <button type="submit" id="updateUserProfileButton"> update user profile </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="updateProfileResultMsg"></div>
+
+    <br>
+    <hr><br> <!-- ========================================================================= -->
+
     <h2>Count the Tuples in DemoTable</h2>
     <button id="countDemotable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
