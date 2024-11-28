@@ -363,15 +363,27 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
             );
 
 
-        //    await connection.execute(
-        //             `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
-        //             [postalCode, 'Canada']
-        //         );
+            let city;
+            const country = "Canada";
 
-        //     await connection.execute(
-        //             `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
-        //             [postalCode, 'Vancouver']
-        //         );
+            if (postalCode === "V6T") {
+                city = "Vancouver";
+            } else if (postalCode === "V5A") {
+                city = "Burnaby";
+            } else {
+                city = "Victoria";
+            }
+
+
+           await connection.execute(
+                    `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+                    [postalCode, country]
+                );
+
+            await connection.execute(
+                    `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
+                    [postalCode, city]
+                );
 
             // Insert into Personality
             await connection.execute(
