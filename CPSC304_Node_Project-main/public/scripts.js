@@ -88,6 +88,50 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+// Fetches data from the demotable and displays it.
+async function fetchAndDisplaySelectedUsers(event) {
+
+    event.preventDefault();
+
+    const tableElement = document.getElementById('usersSelectedTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const query = document.getElementById('queryInput').value;
+
+    const response = await fetch('/selectUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query: query
+        })
+    });
+
+    const responseData = await response.json();
+    console.log(responseData.data);
+    const userContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    try {
+        userContent.forEach(user => {
+            const row = tableBody.insertRow();
+            user.forEach((field, index) => {
+                const cell = row.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+        const messageElement = document.getElementById('usersSelectResult');
+        messageElement.textContent = "users queried successfully!";
+    } catch (error) {
+        alert("Error selecting users, make sure your query is in the right format");
+    }
+}
+
 // This function resets or initializes the demotable.
 async function resetDemotable() {
     const response = await fetch("/initiate-demotable", {
@@ -336,6 +380,7 @@ window.onload = function () {
     document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
     document.getElementById("updateProfile").addEventListener("submit", updateUserProfile)
     document.getElementById("deleteUserFromTableForm").addEventListener("submit", deleteUserFromUserTable);
+    document.getElementById("usersToSelect").addEventListener("submit", fetchAndDisplaySelectedUsers);
 };
 
 // General function to refresh the displayed table data. 

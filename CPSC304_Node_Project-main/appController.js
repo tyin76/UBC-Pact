@@ -101,6 +101,20 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.post('/selectUser', async (req, res) => {
+
+    console.log( req.body);
+    const {query} = req.body;
+
+    const tableContent = await appService.selectUser(query);
+
+    if (tableContent) {
+        res.json({ data: tableContent });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.post('/insertTestData', async (req, res) => {
     const insertResult = await appService.insertTestData();
     if (insertResult) {

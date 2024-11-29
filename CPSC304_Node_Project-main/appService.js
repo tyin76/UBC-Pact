@@ -547,7 +547,6 @@ async function insertTestData() {
     });
 }
 
-
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -559,6 +558,72 @@ async function updateNameDemotable(oldName, newName) {
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
+    });
+}
+
+// query form 
+// Valid fields email, name, age,
+// Valid query form: Email=jake@gmail.com OR Email=joe@gmail.com AND Age=12
+async function selectUser(query) {
+    return await withOracleDB(async (connection) => {
+        console.log("hi");
+        console.log(query);
+
+        const splitQuery = query.trim().toLowerCase().split(" ");
+
+        let sqlQuery = `
+            SELECT u.Email, u.Name, ug.Gender, ua.Age, p.Name, p.Sexuality, p.DreamVacation, p.FavouriteHobby, p.FavouriteSport, p.FavouriteMusicGenre
+            FROM Users u
+            JOIN UserGender ug ON u.Email = ug.Email
+            JOIN UserAge ua ON u.Email = ua.Email
+            JOIN Profile p ON  u.ProfileID = p.ProfileID
+            WHERE
+    `;
+
+        for (const str of splitQuery) {
+            if (str.includes("=")) {
+
+                const splitStr = str.split("=");
+                const field = splitStr[0];
+                const value = splitStr[1];
+
+                switch (field) {
+                    case "email":
+                        sqlQuery += ` u.Email='${value}'`
+                        break;
+                    case "name":
+                        sqlQuery += ` u.Name='${value}'`
+                        break;
+                    case "age":
+                        sqlQuery += ` ua.Age=${value}` // no quotations ` ` because it's a numeric field
+                        break;
+                    default:
+                        console.error("Invalid field entered into selection");
+                        return false;
+                }
+            } else {
+                switch (str) {
+                    case "or":
+                        sqlQuery += ` OR`
+                        break;
+                    case "and":
+                        sqlQuery += ` AND`
+                        break;
+                    default:
+                        console.error("Invalid operator entered into selection");
+                        return false;
+                }
+            }
+        }
+
+        console.log(sqlQuery);
+
+        const result = await connection.execute(sqlQuery).catch(() => {
+            return false;
+        });
+        return result.rows;
+    }).catch(() => {
+        return [];
     });
 }
 
@@ -582,5 +647,6 @@ module.exports = {
     insertTestData,
     insertUser,
     updateProfile,
-    deleteUser
+    deleteUser,
+    selectUser
 };
