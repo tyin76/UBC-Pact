@@ -561,6 +561,78 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
+async function projectUserData(arrayOfFields) {
+    return await withOracleDB(async (connection) => {
+
+        let select = "";
+
+        for (const field of arrayOfFields) {
+            switch (field) {
+                case "Email":
+                    select += 'u.Email, ';
+                    break;
+                case "Name":
+                    select += 'u.Name, ';
+                    break;
+                case "Gender":
+                    select += 'ug.Gender, ';
+                    break;
+                case "PostalCode":
+                    select += 'upc.PostalCode, ';
+                    break;
+                case "Country":
+                    select += 'pCountry.Country, ';
+                    break;
+                case "City":
+                    select += 'pCity.City, ';
+                    break;
+                case "Age":
+                    select += 'ua.Age, ';
+                    break;
+                case "Nickname":
+                    select += 'p.Name, ';
+                    break;
+                case "Sexuality":
+                    select += 'p.Sexuality, ';
+                    break;
+                case "DreamVacation":
+                    select += 'p.DreamVacation, ';
+                    break;
+                case "FavouriteHobby":
+                    select += 'p.FavouriteHobby, ';
+                    break;
+                case "FavouriteSport":
+                    select += 'p.FavouriteSport, ';
+                    break;
+                case "FavouriteMusicGenre":
+                    select += 'p.FavouriteMusicGenre, ';
+                    break;
+            }
+        }
+
+        // remove the last comma
+        select = select.trim().slice(0, -1);
+
+        const sqlQuery = `
+            SELECT ${select}
+            FROM Users u
+            JOIN UserGender ug ON u.Email = ug.Email
+            JOIN UserPostalCode upc ON u.Email = upc.Email
+            LEFT JOIN PostalCodeCountry pCountry ON pCountry.PostalCode = upc.PostalCode
+            LEFT JOIN PostalCodeCity pCity ON pCity.PostalCode = upc.PostalCode
+            JOIN UserAge ua ON u.Email = ua.Email
+            JOIN Profile p ON u.ProfileID = p.ProfileID`
+
+        console.log(sqlQuery);
+
+        const result = await connection.execute(sqlQuery);
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
 // query form 
 // Valid fields email, name, age,
 // Valid query form: Email=jake@gmail.com OR Email=joe@gmail.com AND Age=12
@@ -666,5 +738,6 @@ module.exports = {
     updateProfile,
     deleteUser,
     selectUser,
+    projectUserData,
     countUsersByPostalCode
 };
