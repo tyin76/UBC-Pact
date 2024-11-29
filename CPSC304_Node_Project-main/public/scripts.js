@@ -88,6 +88,64 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+async function fetchAndDisplayProjectedUsers(event) {
+    event.preventDefault();
+
+    const tableElement = document.getElementById('projectionUsersTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const selectBoxes = document.getElementById('fieldsToProjectFrom');
+    const arrayOfFields = Array.from(selectBoxes.selectedOptions).map(option => option.value);
+
+    if (arrayOfFields.length === 0) {
+        alert("Select at least one field to view");
+        return;
+    }
+
+    const response = await fetch('/projectUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            arrayOfFields: arrayOfFields
+        })
+    });
+
+    const responseData = await response.json();
+    const usersTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    const thead = tableElement.querySelector('thead');
+
+    // Should clear the old headers
+    if (thead) {
+        thead.innerHTML = '';
+    }
+
+    const headerRow = document.createElement('tr');
+
+    for (const field of arrayOfFields) {
+        const th = document.createElement('th');
+        th.textContent = field;
+        headerRow.appendChild(th);
+    }
+
+    thead.appendChild(headerRow);
+
+    usersTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // Fetches data from the demotable and displays it.
 async function fetchAndDisplaySelectedUsers(event) {
 
@@ -433,6 +491,24 @@ async function countHeteroSexuals() {
     }
 }
 
+async function countUsersByPostalCode() {
+    const postalCode = document.getElementById('postalCodeSelect').value;
+    const response = await fetch('/count-users-by-postal', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ postalCode })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+        const resultDiv = document.getElementById('postalCodeCountResult');
+        resultDiv.textContent = `Number of users in ${postalCode}: ${data.count}`;
+    } else {
+        alert('Error counting users by postal code');
+    }
+}
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -451,6 +527,7 @@ window.onload = function () {
     document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
     document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
 
+    document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
 };
 
 // General function to refresh the displayed table data. 

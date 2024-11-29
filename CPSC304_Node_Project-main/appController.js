@@ -115,6 +115,20 @@ router.post('/selectUser', async (req, res) => {
     }
 });
 
+router.post('/projectUser', async (req, res) => {
+
+    const { arrayOfFields } = req.body;
+
+    const tableContent = await appService.projectUserData(arrayOfFields);
+
+    if (tableContent) {
+        res.json({ data: tableContent });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+
 router.post('/insertTestData', async (req, res) => {
     const insertResult = await appService.insertTestData();
     if (insertResult) {
@@ -123,6 +137,21 @@ router.post('/insertTestData', async (req, res) => {
         res.status(500).json({ success: false });
     }
 })
+
+router.post('/count-users-by-postal', async (req, res) => {
+    const { postalCode } = req.body;
+    const result = await appService.countUsersByPostalCode(postalCode);
+    if (result !== null) {
+        res.json({
+            success: true,
+            count: result
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
+    }
+});
 
 router.get('/counthomosexuals', async (req, res) => {
     try {
@@ -178,5 +207,142 @@ router.get('/countheterosexuals', async (req, res) => {
 
 
 
+router.post('/count-users-by-postal', async (req, res) => {
+    const { postalCode } = req.body;
+    const result = await appService.countUsersByPostalCode(postalCode);
+    if (result !== null) {
+        res.json({
+            success: true,
+            count: result
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
+    }
+});
+
+router.get('/counthomosexuals', async (req, res) => {
+    try {
+        console.log('it ran');
+        const numberHomosexuals = await appService.countHomosexualUsers();
+
+        if (numberHomosexuals === null || numberHomosexuals === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", numberHomosexuals);
+        res.json({
+            success: true,
+            count: numberHomosexuals
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
+
+router.get('/countheterosexuals', async (req, res) => {
+    try {
+        console.log('it ran');
+        const number = await appService.countHeterosexualUsers();
+
+        if (number === null || number === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", number);
+        res.json({
+            success: true,
+            count: number
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
+
+
+
+router.get('/counthomosexuals', async (req, res) => {
+    try {
+        console.log('It ran');
+        const numberHomosexuals = await appService.countHomosexualUsers();
+
+        if (numberHomosexuals === null || numberHomosexuals === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", numberHomosexuals);
+        res.json({
+            success: true,
+            count: numberHomosexuals
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
+
+// Route to count users by postal code
+router.post('/count-users-by-postal', async (req, res) => {
+    const { postalCode } = req.body;
+    const result = await appService.countUsersByPostalCode(postalCode);
+    if (result !== null) {
+        res.json({
+            success: true,
+            count: result
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
+    }
+});
+
+// Route to count heterosexual users
+router.get('/countheterosexuals', async (req, res) => {
+    try {
+        console.log('It ran');
+        const number = await appService.countHeterosexualUsers();
+
+        if (number === null || number === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful heterosexuals count:", number);
+        res.json({
+            success: true,
+            count: number
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting heterosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
 
 module.exports = router;
