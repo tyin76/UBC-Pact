@@ -316,12 +316,53 @@ async function updateNameDemotable(event) {
     const responseData = await response.json();
     const messageElement = document.getElementById('updateNameResultMsg');
 
-    if (responseData.success) {
+    if (!responseData) {
         messageElement.textContent = "Name updated successfully!";
         fetchTableData();
     } else {
         messageElement.textContent = "Error updating name!";
     }
+}
+
+// Get best match
+async function getBestMatch(event) {
+
+    event.preventDefault();
+
+    const tableElement = document.getElementById('matchTableStuff');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const emailToMatch = document.getElementById('emailToFindMatch').value;
+
+    const response = await fetch('/getMatchHeteroMale', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: emailToMatch,
+        })
+    });
+
+    const responseData = await response.json();
+    const usersTableContent = responseData.data;
+
+    if (responseData.data === undefined || responseData === null) {
+        alert("Error finding matches");
+    }
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    usersTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 // Counts rows in the demotable.
@@ -649,6 +690,7 @@ window.onload = function () {
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
     document.getElementById("findUsersButton").addEventListener("click", findUsers);
     document.getElementById("usersToJoin").addEventListener("submit", fetchAndDisplayUserAnswers);
+    document.getElementById("usersToFindMatch").addEventListener("submit", getBestMatch);
 };
 
 // General function to refresh the displayed table data. 
