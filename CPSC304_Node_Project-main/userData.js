@@ -49,7 +49,7 @@ async function insertPostalCodes(connection) {
         { autoCommit: true }
     );
 
-      await connection.execute(
+    await connection.execute(
         `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
         { PostalCode: 'V8W', Country: 'Canada' },
         { autoCommit: true }
@@ -67,7 +67,7 @@ async function insertPostalCodes(connection) {
         { autoCommit: true }
     );
 
-        await connection.execute(
+    await connection.execute(
         `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
         { PostalCode: 'V8W', City: 'Victoria' },
         { autoCommit: true }
@@ -337,6 +337,65 @@ async function insertFegiclyn(connection) {
         },
         { autoCommit: true }
     );
+
+    // Insert the user answer stuff
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegiclyn@gmail.com1",
+            '1',
+            5,
+            'fegiclyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegiclyn@gmail.com2",
+            '2',
+            7,
+            'fegiclyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegiclyn@gmail.com3",
+            '3',
+            2,
+            'fegiclyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegiclyn@gmail.com4",
+            '4',
+            6,
+            'fegiclyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegiclyn@gmail.com5",
+            '5',
+            3,
+            'fegiclyn@gmail.com'
+        ]
+    );
+
+
+
 }
 
 async function insertTerence(connection) {
@@ -396,6 +455,62 @@ async function insertTerence(connection) {
             MailBoxID: 'terence@gmail.com'
         },
         { autoCommit: true }
+    );
+
+    // Insert the user answer stuff
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terence@gmail.com1",
+            '1',
+            5,
+            'terence@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terence@gmail.com2",
+            '2',
+            8,
+            'terence@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terence@gmail.com3",
+            '3',
+            9,
+            'terence@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terence@gmail.com4",
+            '4',
+            10,
+            'terence@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terence@gmail.com5",
+            '5',
+            10,
+            'terence@gmail.com'
+        ]
     );
 }
 
@@ -458,6 +573,62 @@ async function insertFegico(connection) {
         },
         { autoCommit: true }
     );
+
+    // Insert the user answer stuff
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegico@gmail.com1",
+            '1',
+            7,
+            'fegico@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegico@gmail.com2",
+            '2',
+            9,
+            'fegico@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegico@gmail.com3",
+            '3',
+            8,
+            'fegico@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegico@gmail.com4",
+            '4',
+            10,
+            'fegico@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "fegico@gmail.com5",
+            '5',
+            6,
+            'fegico@gmail.com'
+        ]
+    );
 }
 
 async function insertJake(connection) {
@@ -517,6 +688,62 @@ async function insertJake(connection) {
             MailBoxID: 'jake@gmail.com'
         },
         { autoCommit: true }
+    );
+
+    // Insert the user answer stuff
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jake@gmail.com1",
+            '1',
+            8,
+            'jake@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jake@gmail.com2",
+            '2',
+            8,
+            'jake@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jake@gmail.com3",
+            '3',
+            5,
+            'jake@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jake@gmail.com4",
+            '4',
+            7,
+            'jake@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jake@gmail.com5",
+            '5',
+            9,
+            'jake@gmail.com'
+        ]
     );
 }
 
@@ -578,6 +805,63 @@ async function insertJaklyn(connection) {
         },
         { autoCommit: true }
     );
+
+    // Insert the user answer stuff
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jaklyn@gmail.com1",
+            '1',
+            9,
+            'jaklyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jaklyn@gmail.com2",
+            '2',
+            1,
+            'jaklyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jaklyn@gmail.com3",
+            '3',
+            9,
+            'jaklyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jaklyn@gmail.com4",
+            '4',
+            9,
+            'jaklyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "jaklyn@gmail.com5",
+            '5',
+            1,
+            'jaklyn@gmail.com'
+        ]
+    );
+
 }
 
 async function insertTerelyn(connection) {
@@ -637,6 +921,62 @@ async function insertTerelyn(connection) {
             MailBoxID: 'terelyn@gmail.com'
         },
         { autoCommit: true }
+    );
+
+    // Insert the user answer stuff
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terelyn@gmail.com1",
+            '1',
+            8,
+            'terelyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terelyn@gmail.com2",
+            '2',
+            2,
+            'terelyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terelyn@gmail.com3",
+            '3',
+            10,
+            'terelyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terelyn@gmail.com4",
+            '4',
+            6,
+            'terelyn@gmail.com'
+        ]
+    );
+
+    await connection.execute(
+        `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+             VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+        [
+            "terelyn@gmail.com5",
+            '5',
+            3,
+            'terelyn@gmail.com'
+        ]
     );
 }
 
