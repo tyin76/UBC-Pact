@@ -311,8 +311,37 @@
 
     <br>
     <hr><br> <!-- ========================================================================= -->
+    <h2>Show Best match (Join query)</h2>
+    <table id="matchTableStuff" border="1">
+        <thead>
+            <tr>
+                per.PersonalityID, ug.Gender, pro.Name, pro.Sexuality, pro.DreamVacation, pro.FavouriteHobby, pro.FavouriteSport, pro.FavouriteMusicGenre,
+                <!--Table head, need to be adjusted accordingly to align with your own.-->
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Nickname</th>
+                <th>Sexuality</th>
+                <th>Dream Vacation</th>
+                <th>Favourite Hobby</th>
+                <th>Favourite Sport</th>
+                <th>Favourite Music Genre</th>
+                <th>Personality similarity match Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h3>Select User to find match for</h3>
+    <form id="usersToFindMatch">
+        Enter email to search here: <input type="text" id="emailToFindMatch" placeholder="Enter email here" required> <br><br>
+        <button type="submit"> view match </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="displayMatchId"></div>
+
+    <hr><br> <!-- ========================================================================= -->
     p.Thinking, p.Feeling, p.Prospecting, p.Judging, p.Turbulent, p.Assertive=======>>>>>>> origin
-    <h2>Get user answers (Join query)</h2>
+    <h2>Get user answers (Another Join query)</h2>
     <table id="userAnswersTable" border="1">
         <thead>
             <tr>

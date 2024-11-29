@@ -387,6 +387,111 @@ async function deleteUser(email) {
     });
 }
 
+
+async function getMatchHeteroMale(email) {
+
+    return await withOracleDB(async (connection) => {
+        try {
+
+            const genderQuery = await connection.execute(`
+                SELECT Gender
+                FROM UserGender
+                Where Email = :email
+                `,
+                [email],
+            );
+
+            if (genderQuery.rows === 0) {
+                console.error(`email not found: ${email}`);
+                return false;
+            }
+
+            const gender = genderQuery.rows[0][0];
+
+            console.log(genderQuery.rows[0][0]);
+
+            const sexualityQuery = await connection.execute(`
+                SELECT Sexuality
+                FROM Profile
+                Where ProfileID = :email
+                `,
+                [email],
+            );
+
+            const sexuality = sexualityQuery.rows[0][0];
+
+            let genderMatch = "";
+            let sexualityMatch = "";
+
+            console.log(gender + sexuality);
+
+            switch (gender + sexuality) {
+                case "MaleHetero":
+                    genderMatch = "Female";
+                    sexualityMatch = "Hetero";
+                    break;
+                case "MaleHomosexual":
+                    genderMatch = "Male";
+                    sexualityMatch = "Homosexual";
+                    break;
+                case "FemaleHetero":
+                    genderMatch = "Male";
+                    sexualityMatch = "Hetero";
+                    break;
+                case "FemaleHomo":
+                    genderMatch = "Female";
+                    sexualityMatch = "Homo";
+                    break;
+            }
+
+            console.log(sexualityQuery.rows[0][0]);
+
+            console.log("sexualityMatch: " + sexualityMatch);
+            console.log("genderMatch: " + genderMatch);
+
+            const result = await connection.execute(`
+                WITH UserPersonality AS (
+                SELECT PersonalityID, Introvertedness, Extrovertedness, Intuitive, Thinking, Prospecting, Turbulent
+                FROM Personality
+                WHERE PersonalityID = :email)
+
+                SELECT per.PersonalityID, ug.Gender, pro.Name, pro.Sexuality, pro.DreamVacation, pro.FavouriteHobby, pro.FavouriteSport, pro.FavouriteMusicGenre,
+                (1 - SQRT(
+                POWER(per.Introvertedness - up.Introvertedness, 2) +
+                POWER(per.Extrovertedness - up.Extrovertedness, 2) +
+                POWER(per.Intuitive - up.Intuitive, 2) +
+                POWER(per.Thinking - up.Thinking, 2) +
+                POWER(per.Prospecting - up.Prospecting, 2) +
+                POWER(per.Turbulent - up.Turbulent, 2))/ 24.49) * 100 AS PersonalitySimilarity
+
+                FROM Personality per
+                JOIN UserGender ug ON ug.Email = per.PersonalityID
+                JOIN Profile pro ON pro.ProfileID = per.PersonalityID
+                CROSS JOIN UserPersonality up
+                WHERE per.PersonalityID <> :email AND ug.Gender = :genderMatch AND pro.Sexuality = :sexualityMatch
+
+                ORDER BY PersonalitySimilarity DESC
+                `,
+                {
+                    email: email,
+                    genderMatch: genderMatch,
+                    sexualityMatch: sexualityMatch
+                }
+            );
+
+            console.log(result.rows);
+            console.log(result.rows[0]);
+
+            return result.rows;
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            console.error('Error stack:', error.stack);
+            await connection.rollback();
+            return false;
+        }
+    });
+}
+
 async function updateProfile(email, fieldToChange, value) {
     return await withOracleDB(async (connection) => {
         if (!['Name', 'Sexuality', 'DreamVacation', 'FavouriteHobby', 'FavouriteSport', 'FavouriteMusicGenre'].includes(fieldToChange)) {
@@ -973,5 +1078,6 @@ module.exports = {
     joinAndGetUserAnswers,
     findExtrovertedPostalCodes,
     findOlderUsers,
-    joinAndGetUserAnswers
+    joinAndGetUserAnswers,
+    getMatchHeteroMale
 };

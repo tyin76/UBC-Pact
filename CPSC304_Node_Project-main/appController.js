@@ -76,6 +76,17 @@ router.delete("/deleteUser", async (req, res) => {
     }
 });
 
+router.post("/getMatchHeteroMale", async (req, res) => {
+    const { email } = req.body;
+    const tableContent = await appService.getMatchHeteroMale(email);
+
+    if (tableContent) {
+        res.json({ data: tableContent });
+    } else {
+        res.status(500).json({ success: false });
+    }
+})
+
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
     const updateResult = await appService.updateNameDemotable(oldName, newName);
