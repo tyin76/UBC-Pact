@@ -526,7 +526,6 @@ window.onload = function () {
     document.getElementById("usersToSelect").addEventListener("submit", fetchAndDisplaySelectedUsers);
     document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
     document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
-
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
 };
 
