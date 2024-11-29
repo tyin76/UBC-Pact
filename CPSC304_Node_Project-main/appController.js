@@ -181,7 +181,7 @@ router.get('/counthomosexuals', async (req, res) => {
 
 router.get('/countheterosexuals', async (req, res) => {
     try {
-        console.log('it ran');
+        //console.log('it ran');
         const number = await appService.countHeterosexualUsers();
 
         if (number === null || number === undefined) {
@@ -204,5 +204,21 @@ router.get('/countheterosexuals', async (req, res) => {
         });
     }
 });
+
+router.post('/personality-select', async (req, res) => {
+    //console.log("personalitySelect ran!")
+    //console.log(req.body);
+
+    const input = req.body;
+    const result = await appService.findUsersWithPersonalityGT(input);
+
+    if (result) {
+        res.json({ data: result });
+    } else {
+        res.status(500).json({ success: false });
+    }
+
+
+})
 
 module.exports = router;

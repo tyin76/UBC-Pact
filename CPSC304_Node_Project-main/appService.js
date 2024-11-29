@@ -770,6 +770,41 @@ async function countUsersByPostalCode(postalCode) {
     });
 }
 
+async function findUsersWithPersonalityGT(input) {
+    return await withOracleDB(async (connection) => {
+        await insertPersonalityQuestions();
+        const sqlQuery = `
+            SELECT u.Email, u.Name, 
+                   GROUP_CONCAT(ua.QuestionID || ':' || ua.AnswerValue SEPARATOR ', ') AS Answers
+            FROM Users u
+            WHERE NOT EXISTS (
+                SELECT q.QuestionID 
+                FROM Question q
+                WHERE q.QuestionContent IN (
+                    'How likely are you to go to a social event after a long day of school?',
+                    'How often do you trust your gut when making decisions?',
+                    'How often do you prioritize your emotions and how others may feel when making decisions?',
+                    'How often do you plan out your week?',
+                    'How often do you feel stressed when things do not go according to plan?'
+                )
+                AND NOT EXISTS (
+                    SELECT 1 
+                    FROM UserAnswer ua
+                    WHERE ua.Email = u.Email 
+                    AND ua.QuestionID = q.QuestionID 
+                    AND ua.AnswerValue > :input
+                )
+            )
+        `;
+
+        const result = await connection.execute(sqlQuery, { input: { val: input } });
+        return result.rows;
+    }).catch((error) => {
+        console.error('Error finding users with personality scores:', error);
+        return [];
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -786,5 +821,6 @@ module.exports = {
     countHomosexualUsers,
     countHeterosexualUsers,
     projectUserData,
-    countUsersByPostalCode
+    countUsersByPostalCode,
+    findUsersWithPersonalityGT
 };

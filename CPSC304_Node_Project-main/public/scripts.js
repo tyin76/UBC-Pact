@@ -509,6 +509,21 @@ async function countUsersByPostalCode() {
         alert('Error counting users by postal code');
     }
 }
+
+async function findUsersWithPersonalityGT() {
+    const input = document.getElementById("personalitySelect").value;
+    const response = await fetch("/personality-select", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input })
+    });
+
+
+
+}
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -527,6 +542,7 @@ window.onload = function () {
     document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
     document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
+    document.getElementById("findPersonalityButton").addEventListener("click", findUsersWithPersonalityGT);
 };
 
 // General function to refresh the displayed table data. 
