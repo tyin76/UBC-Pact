@@ -462,28 +462,28 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                     { QuestionID: '1', QuestionContent: 'How likely are you to go to a social event after a long day of school?' },
                     { autoCommit: true }
                 );
-            
+
                 // Intuitive and observant, where this answer determines intuition
                 await connection.execute(
                     `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
                     { QuestionID: '2', QuestionContent: 'How often do you trust your gut when making decisions?' },
                     { autoCommit: true }
                 );
-            
+
                 // Thinking and feeling, where this answer determines feeling
                 await connection.execute(
                     `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
                     { QuestionID: '3', QuestionContent: 'How often do you prioritize your emotions and how others may feel when making decisions?' },
                     { autoCommit: true }
                 );
-            
+
                 // Judging and prospecting, where this answer determines judging
                 await connection.execute(
                     `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
                     { QuestionID: '4', QuestionContent: 'How often do you plan out your week?' },
                     { autoCommit: true }
                 );
-            
+
                 // Turbulent and assertive where this answer determines turbulence
                 await connection.execute(
                     `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
@@ -549,7 +549,7 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                     email
                 ]
             );
-    
+
             await connection.execute(
                 `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
                  VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
@@ -560,7 +560,7 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                     email
                 ]
             );
-    
+
             await connection.execute(
                 `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
                  VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
@@ -571,7 +571,7 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                     email
                 ]
             );
-    
+
             await connection.execute(
                 `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
                  VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
@@ -582,7 +582,7 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                     email
                 ]
             );
-    
+
             await connection.execute(
                 `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
                  VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
@@ -875,9 +875,9 @@ async function joinAndGetUserAnswers(email) {
             WHERE ua.Email=:email`,
             [email]);
 
-            if (result.rows.length === 0) {
-                return false;
-            }
+        if (result.rows.length === 0) {
+            return false;
+        }
 
         return result.rows;
     }).catch(() => {
@@ -901,6 +901,38 @@ async function countUsersByPostalCode(postalCode) {
         return null;
     });
 }
+
+// input is a string
+async function findOlderUsers(input) {
+    try {
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                `SELECT u.Email, u.Name
+                FROM Users u
+                JOIN UserPostalCode upc ON u.Email = upc.Email
+                WHERE upc.PostalCode IN (
+                    SELECT upc2.PostalCode
+                    FROM UserPostalCode upc2
+                    JOIN Users u2 ON upc2.Email = u2.Email
+                    GROUP BY upc2.PostalCode
+                    HAVING COUNT(u2.Email) >= :input
+                    )
+                    `,
+                [input]
+            );
+
+
+            //console.log("Full Query Result:", result.rows);
+
+            return result.rows;
+        });
+    } catch (error) {
+        console.error("Detailed error counting users:", error);
+        throw error;
+    }
+}
+
+
 
 async function findExtrovertedPostalCodes() {
     return await withOracleDB(async (connection) => {
@@ -938,5 +970,7 @@ module.exports = {
     projectUserData,
     countUsersByPostalCode,
     joinAndGetUserAnswers,
-    findExtrovertedPostalCodes
+    findExtrovertedPostalCodes,
+    findOlderUsers,
+    joinAndGetUserAnswers
 };

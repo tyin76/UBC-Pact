@@ -194,7 +194,7 @@ router.get('/counthomosexuals', async (req, res) => {
 
 router.get('/countheterosexuals', async (req, res) => {
     try {
-        console.log('it ran');
+        //console.log('it ran');
         const number = await appService.countHeterosexualUsers();
 
         if (number === null || number === undefined) {
@@ -218,6 +218,24 @@ router.get('/countheterosexuals', async (req, res) => {
     }
 });
 
+router.post('/ageOlder', async (req, res) => {
+    //console.log("personalitySelect ran!")
+    //console.log(req.body);
+
+    const { input } = req.body;
+    console.log(input);
+    console.log(typeof input);
+    const result = await appService.findOlderUsers(input);
+    //console.log(result);
+
+    if (result) {
+        res.json({ data: result });
+    } else {
+        res.status(500).json({ success: false });
+    }
+
+
+})
 router.get("/extroverted-postal-codes", async (req, res) => {
     const result = await appService.findExtrovertedPostalCodes();
     if (result) {

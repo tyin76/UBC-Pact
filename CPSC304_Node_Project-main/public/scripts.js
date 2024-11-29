@@ -554,10 +554,69 @@ async function countUsersByPostalCode() {
     }
 }
 
+
+async function findUsers(event) {
+    event.preventDefault();
+
+    const tableElement = document.getElementById('showResults');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const input = document.getElementById("ageOlderInput").value;
+    // Send the selected age input to the backend
+    const response = await fetch("/ageOlder", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input })
+    });
+
+    if (!response.ok) {
+        console.error("Failed to fetch data:", response.statusText);
+        return;
+    }
+
+
+
+    const responseData = await response.json();
+    console.log(responseData.data);
+    const userContent = responseData.data;
+
+
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    try {
+        if (responseData.data.length > 0) {
+            const message = document.getElementById("findUsersResult");
+            message.textContent = 'Query Successful!';
+            message.style.color = 'green';
+        } else {
+            const noData = document.getElementById("findUsersResult");
+            noData.textContent = "No users match your given criteria";
+            noData.style.color = 'red';
+        }
+        userContent.forEach(user => {
+            const row = tableBody.insertRow();
+            user.forEach((field, index) => {
+                const cell = row.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+    } catch (error) {
+        alert("Error");
+        console.log(error);
+    }
+}
+
+
 async function findExtrovertedPostalCodes() {
     const response = await fetch('/extroverted-postal-codes');
     const data = await response.json();
-    
+
     const resultDiv = document.getElementById('extrovertedPostalResult');
     if (data.success && data.data.length > 0) {
         let html = '<h3>Locations where all users are extroverted:</h3><ul>';
@@ -588,6 +647,7 @@ window.onload = function () {
     document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
     document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
+    document.getElementById("findUsersButton").addEventListener("click", findUsers);
     document.getElementById("usersToJoin").addEventListener("submit", fetchAndDisplayUserAnswers);
 };
 
