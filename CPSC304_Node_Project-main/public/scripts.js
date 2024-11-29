@@ -554,9 +554,16 @@ async function countUsersByPostalCode() {
     }
 }
 
-async function findUsersWithPersonalityGT() {
-    const input = document.getElementById("personalitySelect").value;
-    const response = await fetch("/personality-select", {
+
+async function findUsers(event) {
+    event.preventDefault();
+
+    const tableElement = document.getElementById('showResults');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const input = document.getElementById("ageOlderInput").value;
+    // Send the selected age input to the backend
+    const response = await fetch("/ageOlder", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -564,9 +571,40 @@ async function findUsersWithPersonalityGT() {
         body: JSON.stringify({ input })
     });
 
+    if (!response.ok) {
+        console.error("Failed to fetch data:", response.statusText);
+        return;
+    }
 
+    // Display success message
+    const message = document.getElementById("findUsersResult");
+    message.textContent = 'Query Successful!';
+    message.style.color = 'green';
 
+    const responseData = await response.json();
+    console.log(responseData.data);
+    const userContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    try {
+        userContent.forEach(user => {
+            const row = tableBody.insertRow();
+            user.forEach((field, index) => {
+                const cell = row.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+    } catch (error) {
+        alert("Error");
+        console.log(error);
+    }
 }
+
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -586,7 +624,7 @@ window.onload = function () {
     document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
     document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
-    document.getElementById("findPersonalityButton").addEventListener("click", findUsersWithPersonalityGT);
+    document.getElementById("findUsersButton").addEventListener("click", findUsers);
     document.getElementById("usersToJoin").addEventListener("submit", fetchAndDisplayUserAnswers);
 };
 

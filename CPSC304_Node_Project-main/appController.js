@@ -218,12 +218,15 @@ router.get('/countheterosexuals', async (req, res) => {
     }
 });
 
-router.post('/personality-select', async (req, res) => {
+router.post('/ageOlder', async (req, res) => {
     //console.log("personalitySelect ran!")
     //console.log(req.body);
 
-    const input = req.body;
-    const result = await appService.findUsersWithPersonalityGT(input);
+    const { input } = req.body;
+    console.log(input);
+    console.log(typeof input);
+    const result = await appService.findOlderUsers(input);
+    //console.log(result);
 
     if (result) {
         res.json({ data: result });
