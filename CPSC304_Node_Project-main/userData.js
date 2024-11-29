@@ -422,8 +422,8 @@ async function insertTerence(connection) {
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
             PersonalityID: 'terence@gmail.com',
-            Introvertedness: 5,
-            Extrovertedness: 5,
+            Introvertedness: 1,
+            Extrovertedness: 9,
             Intuitive: 8,
             Observant: 2,
             Thinking: 1,
@@ -464,7 +464,7 @@ async function insertTerence(connection) {
         [
             "terence@gmail.com1",
             '1',
-            5,
+            9,
             'terence@gmail.com'
         ]
     );
@@ -540,7 +540,7 @@ async function insertFegico(connection) {
         {
             PersonalityID: 'fegico@gmail.com',
             Introvertedness: 2,
-            Extrovertedness: 7,
+            Extrovertedness: 8,
             Intuitive: 9,
             Observant: 1,
             Thinking: 2,
@@ -581,7 +581,7 @@ async function insertFegico(connection) {
         [
             "fegico@gmail.com1",
             '1',
-            7,
+            8,
             'fegico@gmail.com'
         ]
     );

@@ -902,6 +902,24 @@ async function countUsersByPostalCode(postalCode) {
     });
 }
 
+async function findExtrovertedPostalCodes() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            SELECT DISTINCT pc.PostalCode, pc.City
+            FROM PostalCodeCity pc
+            WHERE NOT EXISTS (
+                (SELECT up.Email 
+                FROM UserPostalCode up 
+                WHERE up.PostalCode = pc.PostalCode)
+                MINUS
+                (SELECT p.PersonalityID 
+                FROM Personality p
+                WHERE p.Extrovertedness > 7)
+            )`);
+        return result.rows;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -919,5 +937,6 @@ module.exports = {
     countHeterosexualUsers,
     projectUserData,
     countUsersByPostalCode,
-    joinAndGetUserAnswers
+    joinAndGetUserAnswers,
+    findExtrovertedPostalCodes
 };
