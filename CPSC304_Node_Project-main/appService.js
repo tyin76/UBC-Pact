@@ -914,7 +914,7 @@ async function findExtrovertedPostalCodes() {
                 MINUS
                 (SELECT p.PersonalityID 
                 FROM Personality p
-                WHERE p.Extrovertedness > 7)
+                WHERE p.Extrovertedness > 5)
             )`);
         return result.rows;
     });
