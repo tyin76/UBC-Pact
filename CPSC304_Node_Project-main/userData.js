@@ -330,7 +330,7 @@ async function insertFegiclyn(connection) {
                     VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'fegiclyn@gmail.com',
-            Name: 'Fegiclyn',
+            Name: 'fegiclyn',
             PersonalityID: 'fegiclyn@gmail.com',
             ProfileID: 'fegiclyn@gmail.com',
             MailBoxID: 'fegiclyn@gmail.com'
@@ -422,8 +422,8 @@ async function insertTerence(connection) {
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
             PersonalityID: 'terence@gmail.com',
-            Introvertedness: 5,
-            Extrovertedness: 5,
+            Introvertedness: 1,
+            Extrovertedness: 9,
             Intuitive: 8,
             Observant: 2,
             Thinking: 1,
@@ -449,7 +449,7 @@ async function insertTerence(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'terence@gmail.com',
-            Name: 'Terence',
+            Name: 'terence',
             PersonalityID: 'terence@gmail.com',
             ProfileID: 'terence@gmail.com',
             MailBoxID: 'terence@gmail.com'
@@ -464,7 +464,7 @@ async function insertTerence(connection) {
         [
             "terence@gmail.com1",
             '1',
-            5,
+            9,
             'terence@gmail.com'
         ]
     );
@@ -540,7 +540,7 @@ async function insertFegico(connection) {
         {
             PersonalityID: 'fegico@gmail.com',
             Introvertedness: 2,
-            Extrovertedness: 7,
+            Extrovertedness: 8,
             Intuitive: 9,
             Observant: 1,
             Thinking: 2,
@@ -566,7 +566,7 @@ async function insertFegico(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'fegico@gmail.com',
-            Name: 'Fegico',
+            Name: 'fegico',
             PersonalityID: 'fegico@gmail.com',
             ProfileID: 'fegico@gmail.com',
             MailBoxID: 'fegico@gmail.com'
@@ -581,7 +581,7 @@ async function insertFegico(connection) {
         [
             "fegico@gmail.com1",
             '1',
-            7,
+            8,
             'fegico@gmail.com'
         ]
     );
@@ -682,7 +682,7 @@ async function insertJake(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'jake@gmail.com',
-            Name: 'Jake',
+            Name: 'jake',
             PersonalityID: 'jake@gmail.com',
             ProfileID: 'jake@gmail.com',
             MailBoxID: 'jake@gmail.com'
@@ -798,7 +798,7 @@ async function insertJaklyn(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'jaklyn@gmail.com',
-            Name: 'Jaklyn',
+            Name: 'jaklyn',
             PersonalityID: 'jaklyn@gmail.com',
             ProfileID: 'jaklyn@gmail.com',
             MailBoxID: 'jaklyn@gmail.com'
@@ -915,7 +915,7 @@ async function insertTerelyn(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'terelyn@gmail.com',
-            Name: 'Terelyn',
+            Name: 'terelyn',
             PersonalityID: 'terelyn@gmail.com',
             ProfileID: 'terelyn@gmail.com',
             MailBoxID: 'terelyn@gmail.com'

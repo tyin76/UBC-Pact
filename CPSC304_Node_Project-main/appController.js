@@ -236,5 +236,13 @@ router.post('/ageOlder', async (req, res) => {
 
 
 })
+router.get("/extroverted-postal-codes", async (req, res) => {
+    const result = await appService.findExtrovertedPostalCodes();
+    if (result) {
+        res.json({ success: true, data: result });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
 
 module.exports = router;

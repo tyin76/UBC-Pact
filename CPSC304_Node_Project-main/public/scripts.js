@@ -576,14 +576,13 @@ async function findUsers(event) {
         return;
     }
 
-    // Display success message
-    const message = document.getElementById("findUsersResult");
-    message.textContent = 'Query Successful!';
-    message.style.color = 'green';
+
 
     const responseData = await response.json();
     console.log(responseData.data);
     const userContent = responseData.data;
+
+
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
@@ -591,6 +590,15 @@ async function findUsers(event) {
     }
 
     try {
+        if (responseData.data.length > 0) {
+            const message = document.getElementById("findUsersResult");
+            message.textContent = 'Query Successful!';
+            message.style.color = 'green';
+        } else {
+            const noData = document.getElementById("findUsersResult");
+            noData.textContent = "No users match your given criteria";
+            noData.style.color = 'red';
+        }
         userContent.forEach(user => {
             const row = tableBody.insertRow();
             user.forEach((field, index) => {
@@ -605,7 +613,22 @@ async function findUsers(event) {
 }
 
 
+async function findExtrovertedPostalCodes() {
+    const response = await fetch('/extroverted-postal-codes');
+    const data = await response.json();
 
+    const resultDiv = document.getElementById('extrovertedPostalResult');
+    if (data.success && data.data.length > 0) {
+        let html = '<h3>Locations where all users are extroverted:</h3><ul>';
+        data.data.forEach(row => {
+            html += `<li>${row[0]} - ${row[1]}</li>`;
+        });
+        html += '</ul>';
+        resultDiv.innerHTML = html;
+    } else {
+        resultDiv.innerHTML = 'No locations found where all users are extroverted';
+    }
+}
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.

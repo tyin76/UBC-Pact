@@ -69,28 +69,28 @@
 
         <!-- Question 1 - Slider -->
         How likely are you to go to a social event after a long day of school?
-        <input type="range" id="question-1" name="question-1" min="1" max="10" value="1" required>
-        <span id="question-1-value">1</span> <br><br>
+        <input type="range" id="question-1" name="question-1" min="0" max="10" value="5" required>
+        <span id="question-1-value">5</span> <br><br>
 
         <!-- Question 2 - Slider -->
         How often do you trust your gut when making decisions?
-        <input type="range" id="question-2" name="question-2" min="1" max="10" value="1" required>
-        <span id="question-2-value">1</span> <br><br>
+        <input type="range" id="question-2" name="question-2" min="0" max="10" value="5" required>
+        <span id="question-2-value">5</span> <br><br>
 
         <!-- Question 3 - Slider -->
         How often do you prioritize your emotions and how others may feel when making decisions?
-        <input type="range" id="question-3" name="question-3" min="1" max="10" value="1" required>
-        <span id="question-3-value">1</span> <br><br>
+        <input type="range" id="question-3" name="question-3" min="0" max="10" value="5" required>
+        <span id="question-3-value">5</span> <br><br>
 
         <!-- Question 4 - Slider -->
         How often do you plan out your week?
-        <input type="range" id="question-4" name="question-4" min="1" max="10" value="1" required>
-        <span id="question-4-value">1</span> <br><br>
+        <input type="range" id="question-4" name="question-4" min="0" max="10" value="5" required>
+        <span id="question-4-value">5</span> <br><br>
 
         <!-- Question 5 - Slider -->
         How often do you feel stressed when things do not go according to plan?
-        <input type="range" id="question-5" name="question-5" min="1" max="10" value="1" required>
-        <span id="question-5-value">1</span> <br><br>
+        <input type="range" id="question-5" name="question-5" min="0" max="10" value="5" required>
+        <span id="question-5-value">5</span> <br><br>
 
         <!-- Question 6 -->
         Please select your gender:
@@ -302,7 +302,7 @@
     <h3>Select Users to display</h3>
     <form id="usersToSelect">
         <div>Valid fields Email, Name, Age</div>
-        <div>Valid query form: Email=jake@gmail.com OR Email=joe@gmail.com AND Age=12</div>
+        <div>Valid query form: Email=jake@gmail.com+OR+Email=joe@gmail.com+AND+Age=12</div>
         Enter your query here: <input type="text" id="queryInput" placeholder="Enter query here" required> <br><br>
         <button type="submit"> view users </button> <br>
     </form>
@@ -311,8 +311,11 @@
 
     <br>
     <hr><br> <!-- ========================================================================= -->
+<<<<<<< HEAD
     q.QuestionContent, ua.AnswerValue, p.Introvertedness, p.Extrovertedness, p.Intuitive, p.Observant, p.Thinking,
     p.Feeling, p.Prospecting, p.Judging, p.Turbulent, p.Assertive
+=======
+>>>>>>> origin
     <h2>Get user answers (Join query)</h2>
     <table id="userAnswersTable" border="1">
         <thead>
@@ -356,6 +359,13 @@
     </select>
     <button onclick="countUsersByPostalCode()">Count Users</button>
     <div id="postalCodeCountResult"></div>
+
+    <br>
+    <hr><br> <!-- ========================================================================= -->
+
+    <h2>Find Postal Codes with All Extroverted Users</h2>
+    <button onclick="findExtrovertedPostalCodes()">Find Extroverted Locations</button>
+    <div id="extrovertedPostalResult"></div>
 
     <br>
     <hr><br> <!-- ========================================================================= -->
