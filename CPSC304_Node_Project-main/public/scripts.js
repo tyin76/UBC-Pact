@@ -424,6 +424,25 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+async function countUsersByPostalCode() {
+    const postalCode = document.getElementById('postalCodeSelect').value;
+    const response = await fetch('/count-users-by-postal', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ postalCode })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+        const resultDiv = document.getElementById('postalCodeCountResult');
+        resultDiv.textContent = `Number of users in ${postalCode}: ${data.count}`;
+    } else {
+        alert('Error counting users by postal code');
+    }
+}
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.

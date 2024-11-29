@@ -309,6 +309,18 @@
     <!-- A placeholder to display messages related to the update operation. -->
     <div id="usersSelectResult"></div>
 
+        <br>
+    <hr><br> <!-- ========================================================================= -->
+
+    <h2>Count Users by Postal Code</h2>
+    <select id="postalCodeSelect">
+        <option value="V6T">V6T - UBC</option>
+        <option value="V5A">V5A - SFU</option>
+        <option value="V8W">V8W - UVIC</option>
+    </select>
+    <button onclick="countUsersByPostalCode()">Count Users</button>
+    <div id="postalCodeCountResult"></div>
+
     <br>
     <hr><br> <!-- ========================================================================= -->
 
@@ -317,6 +329,9 @@
     <button id="countDemotable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
     <div id="countResultMsg"></div> <br>
+
+
+
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

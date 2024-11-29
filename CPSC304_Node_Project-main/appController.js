@@ -138,5 +138,20 @@ router.post('/insertTestData', async (req, res) => {
     }
 })
 
+router.post('/count-users-by-postal', async (req, res) => {
+    const { postalCode } = req.body;
+    const result = await appService.countUsersByPostalCode(postalCode);
+    if (result !== null) {
+        res.json({
+            success: true,
+            count: result
+        });
+    } else {
+        res.status(500).json({
+            success: false
+        });
+    }
+});
+
 
 module.exports = router;

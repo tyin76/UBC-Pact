@@ -708,6 +708,23 @@ async function countDemotable() {
     });
 }
 
+async function countUsersByPostalCode(postalCode) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT upc.PostalCode, COUNT(*) as UserCount
+             FROM UserPostalCode upc
+             GROUP BY upc.PostalCode
+             HAVING upc.PostalCode = :postalCode`,
+            [postalCode]
+        );
+        
+        return result.rows[0] ? result.rows[0][1] : 0;
+    }).catch((err) => {
+        console.error(err);
+        return null;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -721,5 +738,6 @@ module.exports = {
     updateProfile,
     deleteUser,
     selectUser,
-    projectUserData
+    projectUserData,
+    countUsersByPostalCode
 };
