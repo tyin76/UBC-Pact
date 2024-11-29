@@ -708,6 +708,51 @@ async function countDemotable() {
     });
 }
 
+async function countHomosexualUsers() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                `SELECT Sexuality, COUNT(*) AS HomosexualCount
+                 FROM Profile
+                 WHERE Sexuality = :sexuality 
+                 GROUP BY Sexuality`,
+                ['Homosexual']
+            );
+
+            console.log("Full Query Result:", result);
+
+            return result.rows[0][1];
+        });
+    } catch (error) {
+        console.error("Detailed error counting homosexual users:", error);
+        throw error;
+    }
+}
+
+async function countHeterosexualUsers() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                `SELECT Sexuality, COUNT(*) AS HeterosexualCount
+                 FROM Profile
+                 WHERE Sexuality = :sexuality 
+                 GROUP BY Sexuality`,
+                ['Hetero']
+            );
+
+            console.log("Full Query Result:", result);
+
+
+            return result.rows[0][1];
+        });
+    } catch (error) {
+        console.error("Detailed error counting heterosexual users:", error);
+        throw error;
+    }
+}
+
+
+
 async function countUsersByPostalCode(postalCode) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -717,7 +762,7 @@ async function countUsersByPostalCode(postalCode) {
              HAVING upc.PostalCode = :postalCode`,
             [postalCode]
         );
-        
+
         return result.rows[0] ? result.rows[0][1] : 0;
     }).catch((err) => {
         console.error(err);
@@ -738,6 +783,8 @@ module.exports = {
     updateProfile,
     deleteUser,
     selectUser,
+    countHomosexualUsers,
+    countHeterosexualUsers,
     projectUserData,
     countUsersByPostalCode
 };
