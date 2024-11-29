@@ -111,8 +111,6 @@ async function fetchUsersTableFromDb() {
             JOIN UserAge ua ON u.Email = ua.Email
             JOIN Profile p ON  u.ProfileID = p.ProfileID
         `);
-
-        console.log(result)
         return result.rows;
     }).catch(() => {
         return [];
@@ -170,12 +168,12 @@ async function initiateDemotable() {
         await connection.execute(`
         CREATE TABLE Profile (
             ProfileID VARCHAR2(200) PRIMARY KEY,
-            Name VARCHAR2(20),
+            Name VARCHAR2(50),
             Sexuality VARCHAR2(10),
             DreamVacation VARCHAR2(50),
-            FavouriteHobby VARCHAR2(30),
-            FavouriteSport VARCHAR2(30),
-            FavouriteMusicGenre VARCHAR2(30)
+            FavouriteHobby VARCHAR2(50),
+            FavouriteSport VARCHAR2(50),
+            FavouriteMusicGenre VARCHAR2(50)
         )
     `);
 
@@ -353,6 +351,56 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function deleteUser(email) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            DELETE FROM Users
+            WHERE ProfileID = :email`,
+            [email],
+            { autoCommit: true }
+        );
+
+        if (result.rowsAffected === 0) {
+            console.error(`No user found with email: ${email}`);
+            return false;
+        }
+
+        return true;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function updateProfile(email, fieldToChange, value) {
+    return await withOracleDB(async (connection) => {
+        if (!['Name', 'Sexuality', 'DreamVacation', 'FavouriteHobby', 'FavouriteSport', 'FavouriteMusicGenre'].includes(fieldToChange)) {
+            throw Error('Invalid field to update for profile');
+        }
+        try {
+            console.log('Updating profile', { email, fieldToChange, value });
+            const result = await connection.execute(
+                `UPDATE Profile
+        SET ${fieldToChange}=:value
+        WHERE ProfileID=:email`,
+                [value, email],
+                { autoCommit: true }
+            );
+
+            if (result.rowsAffected === 0) {
+                console.error(`No user found with email: ${email}`);
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            console.error('Error stack:', error.stack);
+            await connection.rollback();
+            return false;
+        }
+    });
+}
+
 async function insertUser(email, name, gender, age, postalCode, nickname, sexuality, dreamVacation, favHobby, favSport, favMusicGenre, extravertedness, intuitive, feeling, judging, turbulence) {
     return await withOracleDB(async (connection) => {
         try {
@@ -374,16 +422,23 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                 city = "Victoria";
             }
 
+            try {
+                await connection.execute(
+                    `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+                    [postalCode, country]
+                );
 
-            await connection.execute(
-                `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
-                [postalCode, country]
-            );
-
-            await connection.execute(
-                `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
-                [postalCode, city]
-            );
+                await connection.execute(
+                    `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
+                    [postalCode, city]
+                );
+            } catch (e) {
+                if (e.errorNum === 1) {
+                    console.log("Postal codes already inputted, skipping.");
+                } else {
+                    throw e;
+                }
+            }
 
             // Insert into Personality
             await connection.execute(
@@ -492,7 +547,6 @@ async function insertTestData() {
     });
 }
 
-
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -504,6 +558,72 @@ async function updateNameDemotable(oldName, newName) {
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
+    });
+}
+
+// query form 
+// Valid fields email, name, age,
+// Valid query form: Email=jake@gmail.com OR Email=joe@gmail.com AND Age=12
+async function selectUser(query) {
+    return await withOracleDB(async (connection) => {
+        console.log("hi");
+        console.log(query);
+
+        const splitQuery = query.trim().toLowerCase().split(" ");
+
+        let sqlQuery = `
+            SELECT u.Email, u.Name, ug.Gender, ua.Age, p.Name, p.Sexuality, p.DreamVacation, p.FavouriteHobby, p.FavouriteSport, p.FavouriteMusicGenre
+            FROM Users u
+            JOIN UserGender ug ON u.Email = ug.Email
+            JOIN UserAge ua ON u.Email = ua.Email
+            JOIN Profile p ON  u.ProfileID = p.ProfileID
+            WHERE
+    `;
+
+        for (const str of splitQuery) {
+            if (str.includes("=")) {
+
+                const splitStr = str.split("=");
+                const field = splitStr[0];
+                const value = splitStr[1];
+
+                switch (field) {
+                    case "email":
+                        sqlQuery += ` u.Email='${value}'`
+                        break;
+                    case "name":
+                        sqlQuery += ` u.Name='${value}'`
+                        break;
+                    case "age":
+                        sqlQuery += ` ua.Age=${value}` // no quotations ` ` because it's a numeric field
+                        break;
+                    default:
+                        console.error("Invalid field entered into selection");
+                        return false;
+                }
+            } else {
+                switch (str) {
+                    case "or":
+                        sqlQuery += ` OR`
+                        break;
+                    case "and":
+                        sqlQuery += ` AND`
+                        break;
+                    default:
+                        console.error("Invalid operator entered into selection");
+                        return false;
+                }
+            }
+        }
+
+        console.log(sqlQuery);
+
+        const result = await connection.execute(sqlQuery).catch(() => {
+            return false;
+        });
+        return result.rows;
+    }).catch(() => {
+        return [];
     });
 }
 
@@ -525,5 +645,8 @@ module.exports = {
     updateNameDemotable,
     countDemotable,
     insertTestData,
-    insertUser
+    insertUser,
+    updateProfile,
+    deleteUser,
+    selectUser
 };

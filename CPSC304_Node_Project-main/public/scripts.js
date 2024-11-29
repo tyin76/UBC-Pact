@@ -88,6 +88,50 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+// Fetches data from the demotable and displays it.
+async function fetchAndDisplaySelectedUsers(event) {
+
+    event.preventDefault();
+
+    const tableElement = document.getElementById('usersSelectedTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const query = document.getElementById('queryInput').value;
+
+    const response = await fetch('/selectUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query: query
+        })
+    });
+
+    const responseData = await response.json();
+    console.log(responseData.data);
+    const userContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    try {
+        userContent.forEach(user => {
+            const row = tableBody.insertRow();
+            user.forEach((field, index) => {
+                const cell = row.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+        const messageElement = document.getElementById('usersSelectResult');
+        messageElement.textContent = "users queried successfully!";
+    } catch (error) {
+        alert("Error selecting users, make sure your query is in the right format");
+    }
+}
+
 // This function resets or initializes the demotable.
 async function resetDemotable() {
     const response = await fetch("/initiate-demotable", {
@@ -196,6 +240,64 @@ async function countDemotable() {
     }
 }
 
+async function deleteUserFromUserTable(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('emailOfUserToDelete').value;
+
+    const response = await fetch("/deleteUser", {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+        })
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        const message = document.getElementById('userDeleteResult')
+        message.textContent = "User deleted successfully!";
+        fetchTableData();
+    } else {
+        const errorMessage = responseData.errorMessage
+        console.error("Error:", errorMessage);
+        alert("Error deleting user!");
+    }
+}
+
+async function updateUserProfile(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('userProfileToUpdate').value;
+    const fieldToChange = document.getElementById('userProfileSelection').value;
+    const value = document.getElementById('userProfileNewValue').value;
+
+    const response = await fetch("/updateUser", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            fieldToChange: fieldToChange,
+            value: value
+        })
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        const message = document.getElementById('updateProfileResultMsg')
+        message.textContent = "User updated successfully!";
+        fetchTableData();
+    } else {
+        const errorMessage = responseData.errorMessage
+        console.error("Error:", errorMessage);
+        alert("Error updating user profile!");
+    }
+}
+
 async function submitSurveyQuestionAnswers(event) {
     event.preventDefault();
 
@@ -276,6 +378,9 @@ window.onload = function () {
     document.getElementById("insertTestData").addEventListener("click", insertTestData);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
+    document.getElementById("updateProfile").addEventListener("submit", updateUserProfile)
+    document.getElementById("deleteUserFromTableForm").addEventListener("submit", deleteUserFromUserTable);
+    document.getElementById("usersToSelect").addEventListener("submit", fetchAndDisplaySelectedUsers);
 };
 
 // General function to refresh the displayed table data. 
