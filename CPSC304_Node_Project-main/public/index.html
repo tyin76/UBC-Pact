@@ -248,6 +248,36 @@
     <br>
     <hr><br> <!-- ========================================================================= -->
 
+    <h2>Project fields on joined user table </h2>
+    <form id="projectFieldsOnUserForm">
+        <div>Remember you can hold click ctrl or cmd to select multiple fields!</div>
+        <select id="fieldsToProjectFrom" multiple size="10">
+            <option value="Email">Email</option>
+            <option value="Name">Name</option>
+            <option value="Gender">Gender</option>
+            <option value="PostalCode">Postal Code</option>
+            <option value="Country">Country</option>
+            <option value="City">City</option>
+            <option value="Age">Age</option>
+            <option value="Nickname">Nickname</option>
+            <option value="Sexuality">Sexuality</option>
+            <option value="DreamVacation">Dream Vacation</option>
+            <option value="FavouriteHobby">Favourite Hobby</option>
+            <option value="FavouriteSport">Favourite Sport</option>
+            <option value="FavouriteMusicGenre">Favourite Music Genre</option>
+        </select>
+        <table id="projectionUsersTable" border="1">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+        <button type="submit"> project user </button> <br>
+    </form>
+    <!-- A placeholder to display messages related to the update operation. -->
+    <div id="projectUserResult"></div>
+
+    <br>
+    <hr><br> <!-- ========================================================================= -->
+
     <h2>Show UsersSeletedTable</h2>
     <table id="usersSelectedTable" border="1">
         <thead>

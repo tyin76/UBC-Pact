@@ -55,7 +55,7 @@ router.post("/submit-survey", async (req, res) => {
 });
 
 router.post("/updateUser", async (req, res) => {
-    const {email, fieldToChange, value} = req.body;
+    const { email, fieldToChange, value } = req.body;
 
     const updateResult = await appService.updateProfile(email, fieldToChange, value);
     if (updateResult) {
@@ -66,7 +66,7 @@ router.post("/updateUser", async (req, res) => {
 });
 
 router.delete("/deleteUser", async (req, res) => {
-    const {email} = req.body;
+    const { email } = req.body;
 
     const deleteResult = await appService.deleteUser(email);
     if (deleteResult) {
@@ -103,8 +103,8 @@ router.get('/count-demotable', async (req, res) => {
 
 router.post('/selectUser', async (req, res) => {
 
-    console.log( req.body);
-    const {query} = req.body;
+    console.log(req.body);
+    const { query } = req.body;
 
     const tableContent = await appService.selectUser(query);
 
@@ -114,6 +114,20 @@ router.post('/selectUser', async (req, res) => {
         res.status(500).json({ success: false });
     }
 });
+
+router.post('/projectUser', async (req, res) => {
+
+    const { arrayOfFields } = req.body;
+
+    const tableContent = await appService.projectUserData(arrayOfFields);
+
+    if (tableContent) {
+        res.json({ data: tableContent });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 
 router.post('/insertTestData', async (req, res) => {
     const insertResult = await appService.insertTestData();
