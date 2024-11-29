@@ -190,6 +190,50 @@ async function fetchAndDisplaySelectedUsers(event) {
     }
 }
 
+// Fetches data from the demotable and displays it.
+async function fetchAndDisplayUserAnswers(event) {
+
+    event.preventDefault();
+
+    const tableElement = document.getElementById('userAnswersTable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const email = document.getElementById('emailToJoin').value;
+
+    const response = await fetch('/joinAndGetUserAnswers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: email
+        })
+    });
+
+    const responseData = await response.json();
+    console.log(responseData.data);
+    const userContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    try {
+        userContent.forEach(user => {
+            const row = tableBody.insertRow();
+            user.forEach((field, index) => {
+                const cell = row.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+        const messageElement = document.getElementById('usersJoinResult');
+        messageElement.textContent = "user answers queried successfully!";
+    } catch (error) {
+        alert("Error getting user answers");
+    }
+}
+
 // This function resets or initializes the demotable.
 async function resetDemotable() {
     const response = await fetch("/initiate-demotable", {
@@ -527,6 +571,7 @@ window.onload = function () {
     document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
     document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
+    document.getElementById("usersToJoin").addEventListener("submit", fetchAndDisplayUserAnswers);
 };
 
 // General function to refresh the displayed table data. 
