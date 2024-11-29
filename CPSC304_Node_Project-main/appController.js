@@ -128,6 +128,19 @@ router.post('/projectUser', async (req, res) => {
     }
 });
 
+router.post('/joinAndGetUserAnswers', async (req, res) => {
+
+    const { email } = req.body;
+
+    const tableContent = await appService.joinAndGetUserAnswers(email);
+
+    if (tableContent) {
+        res.json({ data: tableContent });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 
 router.post('/insertTestData', async (req, res) => {
     const insertResult = await appService.insertTestData();

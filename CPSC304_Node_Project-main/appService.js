@@ -214,7 +214,7 @@ async function initiateDemotable() {
         // Create Question
         await connection.execute(`
         CREATE TABLE Question (
-            QuestionID VARCHAR2(8) PRIMARY KEY, 
+            QuestionID VARCHAR2(200) PRIMARY KEY, 
             QuestionContent VARCHAR(2000)
       )
     `);
@@ -293,8 +293,8 @@ async function initiateDemotable() {
         // Create UserAnswer table
         await connection.execute(`
             CREATE TABLE UserAnswer (
-	            AnswerID VARCHAR2(8) PRIMARY KEY, 
-  	            QuestionID VARCHAR2(8),
+	            AnswerID VARCHAR2(200) PRIMARY KEY, 
+  	            QuestionID VARCHAR2(200),
 	            AnswerValue NUMBER,
             	Email VARCHAR2(255),
 	            FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE,
@@ -440,6 +440,48 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                 }
             }
 
+            try {
+                await connection.execute(
+                    `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+                    { QuestionID: '1', QuestionContent: 'How likely are you to go to a social event after a long day of school?' },
+                    { autoCommit: true }
+                );
+            
+                // Intuitive and observant, where this answer determines intuition
+                await connection.execute(
+                    `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+                    { QuestionID: '2', QuestionContent: 'How often do you trust your gut when making decisions?' },
+                    { autoCommit: true }
+                );
+            
+                // Thinking and feeling, where this answer determines feeling
+                await connection.execute(
+                    `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+                    { QuestionID: '3', QuestionContent: 'How often do you prioritize your emotions and how others may feel when making decisions?' },
+                    { autoCommit: true }
+                );
+            
+                // Judging and prospecting, where this answer determines judging
+                await connection.execute(
+                    `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+                    { QuestionID: '4', QuestionContent: 'How often do you plan out your week?' },
+                    { autoCommit: true }
+                );
+            
+                // Turbulent and assertive where this answer determines turbulence
+                await connection.execute(
+                    `INSERT INTO Question (QuestionID, QuestionContent) VALUES (:QuestionID, :QuestionContent)`,
+                    { QuestionID: '5', QuestionContent: 'How often do you feel stressed when things do not go according to plan?' },
+                    { autoCommit: true }
+                );
+            } catch (e) {
+                if (e.errorNum === 1) {
+                    console.log("Questions already inputted, skipping.");
+                } else {
+                    throw e;
+                }
+            }
+
             // Insert into Personality
             await connection.execute(
                 `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive) 
@@ -479,6 +521,61 @@ async function insertUser(email, name, gender, age, postalCode, nickname, sexual
                 `INSERT INTO Users (Email, Name, PersonalityID, ProfileID, MailBoxID) 
                  VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
                 [email, name, email, email, email]
+            );
+
+            await connection.execute(
+                `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+                 VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+                [
+                    email + "1",
+                    '1',
+                    extravertedness,
+                    email
+                ]
+            );
+    
+            await connection.execute(
+                `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+                 VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+                [
+                    email + "2",
+                    '2',
+                    intuitive,
+                    email
+                ]
+            );
+    
+            await connection.execute(
+                `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+                 VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+                [
+                    email + "3",
+                    '3',
+                    feeling,
+                    email
+                ]
+            );
+    
+            await connection.execute(
+                `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+                 VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+                [
+                    email + "4",
+                    '4',
+                    judging,
+                    email
+                ]
+            );
+    
+            await connection.execute(
+                `INSERT INTO UserAnswer (AnswerID, QuestionID, AnswerValue, Email) 
+                 VALUES (:AnswerID, :QuestionID, :AnswerValue, :Email)`,
+                [
+                    email + "5",
+                    '5',
+                    turbulence,
+                    email
+                ]
             );
 
             // Insert into UserGender
@@ -752,6 +849,20 @@ async function countHeterosexualUsers() {
 }
 
 
+async function joinAndGetUserAnswers(email) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`
+            SELECT q.QuestionContent, ua.AnswerValue, p.Introvertedness, p.Extrovertedness, p.Intuitive, p.Observant, p.Thinking, p.Feeling, p.Prospecting, p.Judging, p.Turbulent, p.Assertive
+            FROM Personality p
+            JOIN UserAnswer ua ON ua.Email = p.PersonalityID
+            JOIN Question q ON q.QuestionID = ua.QuestionID
+            WHERE ua.Email=:email`,
+            [email]);
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
 
 async function countUsersByPostalCode(postalCode) {
     return await withOracleDB(async (connection) => {
@@ -786,5 +897,6 @@ module.exports = {
     countHomosexualUsers,
     countHeterosexualUsers,
     projectUserData,
-    countUsersByPostalCode
+    countUsersByPostalCode,
+    joinAndGetUserAnswers
 };
