@@ -394,7 +394,7 @@ async function insertFegiclyn(connection) {
                     VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'fegiclyn@gmail.com',
-            Name: 'Fegiclyn',
+            Name: 'fegiclyn',
             PersonalityID: 'fegiclyn@gmail.com',
             ProfileID: 'fegiclyn@gmail.com',
             MailBoxID: 'fegiclyn@gmail.com'
@@ -454,7 +454,7 @@ async function insertTerence(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'terence@gmail.com',
-            Name: 'Terence',
+            Name: 'terence',
             PersonalityID: 'terence@gmail.com',
             ProfileID: 'terence@gmail.com',
             MailBoxID: 'terence@gmail.com'
@@ -515,7 +515,7 @@ async function insertFegico(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'fegico@gmail.com',
-            Name: 'Fegico',
+            Name: 'fegico',
             PersonalityID: 'fegico@gmail.com',
             ProfileID: 'fegico@gmail.com',
             MailBoxID: 'fegico@gmail.com'
@@ -575,7 +575,7 @@ async function insertJake(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'jake@gmail.com',
-            Name: 'Jake',
+            Name: 'jake',
             PersonalityID: 'jake@gmail.com',
             ProfileID: 'jake@gmail.com',
             MailBoxID: 'jake@gmail.com'
@@ -635,7 +635,7 @@ async function insertJaklyn(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'jaklyn@gmail.com',
-            Name: 'Jaklyn',
+            Name: 'jaklyn',
             PersonalityID: 'jaklyn@gmail.com',
             ProfileID: 'jaklyn@gmail.com',
             MailBoxID: 'jaklyn@gmail.com'
@@ -695,7 +695,7 @@ async function insertTerelyn(connection) {
         VALUES (:Email, :Name, :PersonalityID, :ProfileID, :MailBoxID)`,
         {
             Email: 'terelyn@gmail.com',
-            Name: 'Terelyn',
+            Name: 'terelyn',
             PersonalityID: 'terelyn@gmail.com',
             ProfileID: 'terelyn@gmail.com',
             MailBoxID: 'terelyn@gmail.com'
