@@ -553,6 +553,23 @@ async function countUsersByPostalCode() {
         alert('Error counting users by postal code');
     }
 }
+
+async function findExtrovertedPostalCodes() {
+    const response = await fetch('/extroverted-postal-codes');
+    const data = await response.json();
+    
+    const resultDiv = document.getElementById('extrovertedPostalResult');
+    if (data.success && data.data.length > 0) {
+        let html = '<h3>Locations where all users are extroverted:</h3><ul>';
+        data.data.forEach(row => {
+            html += `<li>${row[0]} - ${row[1]}</li>`;
+        });
+        html += '</ul>';
+        resultDiv.innerHTML = html;
+    } else {
+        resultDiv.innerHTML = 'No locations found where all users are extroverted';
+    }
+}
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.

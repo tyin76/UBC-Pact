@@ -336,7 +336,8 @@
 
     <h3>Select Users to display</h3>
     <form id="usersToJoin">
-        Enter email to view answers of here: <input type="text" id="emailToJoin" placeholder="Enter email here" required> <br><br>
+        Enter email to view answers of here: <input type="text" id="emailToJoin" placeholder="Enter email here"
+            required> <br><br>
         <button type="submit"> view user answers </button> <br>
     </form>
     <!-- A placeholder to display messages related to the update operation. -->
@@ -353,6 +354,13 @@
     </select>
     <button onclick="countUsersByPostalCode()">Count Users</button>
     <div id="postalCodeCountResult"></div>
+
+    <br>
+    <hr><br> <!-- ========================================================================= -->
+
+    <h2>Find Postal Codes with All Extroverted Users</h2>
+    <button onclick="findExtrovertedPostalCodes()">Find Extroverted Locations</button>
+    <div id="extrovertedPostalResult"></div>
 
     <br>
     <hr><br> <!-- ========================================================================= -->
