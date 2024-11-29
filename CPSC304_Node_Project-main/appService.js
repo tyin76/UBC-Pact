@@ -907,9 +907,10 @@ async function findOlderUsers(input) {
     try {
         return await withOracleDB(async (connection) => {
             const result = await connection.execute(
-                `SELECT u.Email, u.Name
-                FROM Users u
+                `SELECT u.Email, u.Name, upc.PostalCode
+                FROM Users u 
                 JOIN UserPostalCode upc ON u.Email = upc.Email
+                JOIN Users u ON u.Email = upc.Email
                 WHERE upc.PostalCode IN (
                     SELECT upc2.PostalCode
                     FROM UserPostalCode upc2
