@@ -353,12 +353,28 @@ async function insertDemotable(id, name) {
 
 async function deleteUser(email) {
     return await withOracleDB(async (connection) => {
+
         const result = await connection.execute(`
             DELETE FROM Users
+            WHERE Email = :email`,
+            [email],
+            { autoCommit: true }
+        );
+
+        await connection.execute(`
+            DELETE FROM Profile
             WHERE ProfileID = :email`,
             [email],
             { autoCommit: true }
         );
+
+        const PROFILE = await connection.execute(`
+            Select *
+            From Profile
+            `
+        );
+
+        console.log(PROFILE.rows);
 
         if (result.rowsAffected === 0) {
             console.error(`No user found with email: ${email}`);
@@ -732,13 +748,13 @@ async function projectUserData(arrayOfFields) {
 
 // query form 
 // Valid fields email, name, age,
-// Valid query form: Email=jake@gmail.com OR Email=joe@gmail.com AND Age=12
+// Valid query form: Email=jake@gmail.com+OR+Email=joe@gmail.com+AND+Age=12
 async function selectUser(query) {
     return await withOracleDB(async (connection) => {
         console.log("hi");
         console.log(query);
 
-        const splitQuery = query.trim().toLowerCase().split(" ");
+        const splitQuery = query.trim().split("+");
 
         let sqlQuery = `
             SELECT u.Email, u.Name, ug.Gender, ua.Age, p.Name, p.Sexuality, p.DreamVacation, p.FavouriteHobby, p.FavouriteSport, p.FavouriteMusicGenre
@@ -756,7 +772,7 @@ async function selectUser(query) {
                 const field = splitStr[0];
                 const value = splitStr[1];
 
-                switch (field) {
+                switch (field.toLowerCase()) {
                     case "email":
                         sqlQuery += ` u.Email='${value}'`
                         break;
@@ -771,7 +787,7 @@ async function selectUser(query) {
                         return false;
                 }
             } else {
-                switch (str) {
+                switch (str.toLowerCase()) {
                     case "or":
                         sqlQuery += ` OR`
                         break;
@@ -858,6 +874,11 @@ async function joinAndGetUserAnswers(email) {
             JOIN Question q ON q.QuestionID = ua.QuestionID
             WHERE ua.Email=:email`,
             [email]);
+
+            if (result.rows.length === 0) {
+                return false;
+            }
+
         return result.rows;
     }).catch(() => {
         return false;
