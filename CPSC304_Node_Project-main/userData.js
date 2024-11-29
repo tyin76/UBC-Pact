@@ -103,25 +103,37 @@ async function createQuestions(connection) {
 async function insertPostalCodes(connection) {
     await connection.execute(
         `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
-        { PostalCode: '1', Country: 'Canada' },
+        { PostalCode: 'V6T', Country: 'Canada' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
-        { PostalCode: '2', Country: 'USA' },
+        { PostalCode: 'V5A', Country: 'Canada' },
+        { autoCommit: true }
+    );
+
+      await connection.execute(
+        `INSERT INTO PostalCodeCountry (PostalCode, Country) VALUES (:PostalCode, :Country)`,
+        { PostalCode: 'V8W', Country: 'Canada' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
-        { PostalCode: '1', City: 'Vancouver' },
+        { PostalCode: 'V6T', City: 'Vancouver' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
-        { PostalCode: '2', City: 'Texas' },
+        { PostalCode: 'V5A', City: 'Burnaby' },
+        { autoCommit: true }
+    );
+
+        await connection.execute(
+        `INSERT INTO PostalCodeCity (PostalCode, City) VALUES (:PostalCode, :City)`,
+        { PostalCode: 'V8W', City: 'Victoria' },
         { autoCommit: true }
     );
 }
@@ -169,37 +181,37 @@ async function assignPostalCodes(connection) {
 
     await connection.execute(
         `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
-        { Email: 'terence@gmail.com', PostalCode: '1' },
+        { Email: 'terence@gmail.com', PostalCode: 'V5A' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
-        { Email: 'jake@gmail.com', PostalCode: '1' },
+        { Email: 'jake@gmail.com', PostalCode: 'V8W' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
-        { Email: 'fegico@gmail.com', PostalCode: '2' },
+        { Email: 'fegico@gmail.com', PostalCode: 'V6T' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
-        { Email: 'jaklyn@gmail.com', PostalCode: '1' },
+        { Email: 'jaklyn@gmail.com', PostalCode: 'V6T' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
-        { Email: 'terelyn@gmail.com', PostalCode: '1' },
+        { Email: 'terelyn@gmail.com', PostalCode: 'V5A' },
         { autoCommit: true }
     );
 
     await connection.execute(
         `INSERT INTO UserPostalCode (Email, PostalCode) VALUES (:Email, :PostalCode)`,
-        { Email: 'fegiclyn@gmail.com', PostalCode: '2' },
+        { Email: 'fegiclyn@gmail.com', PostalCode: 'V8W' },
         { autoCommit: true }
     );
 }
@@ -212,7 +224,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "1",
-            MailboxID: "1",
+            MailboxID: "fegico@gmail.com",
             Email: "fegico@gmail.com",
             Message: "Hi, you are basically my twin.",
         },
@@ -224,7 +236,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "2",
-            MailboxID: "2",
+            MailboxID: "fegico@gmail.com",
             Email: "fegico@gmail.com",
             Message: "Hi, I love you.",
         },
@@ -235,7 +247,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "3",
-            MailboxID: "2",
+            MailboxID: "fegico@gmail.com",
             Email: "fegico@gmail.com",
             Message: "Hello? Please respond did u see my last message?",
         },
@@ -247,7 +259,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "4",
-            MailboxID: "3",
+            MailboxID: "terence@gmail.com",
             Email: "terence@gmail.com",
             Message: "Hi, hope on league.",
         },
@@ -259,7 +271,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "5",
-            MailboxID: "4",
+            MailboxID: "terence@gmail.com",
             Email: "terence@gmail.com",
             Message: "Hi, are u goin to class.",
         },
@@ -271,7 +283,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "6",
-            MailboxID: "5",
+            MailboxID: "terence@gmail.com",
             Email: "terence@gmail.com",
             Message: "Hi, wanna sign a contract",
         },
@@ -283,7 +295,7 @@ async function assignMail(connection) {
         `INSERT INTO Mail (MailID, MailboxID, Email, Message) VALUES (:MailID, :MailboxID, :Email, :Message)`,
         {
             MailID: "7",
-            MailboxID: "6",
+            MailboxID: "terence@gmail.com",
             Email: "terence@gmail.com",
             Message: "Hi, u are my leageu twin",
         },
@@ -338,9 +350,9 @@ async function insertFegiclyn(connection) {
         `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
                     VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
-            ProfileID: '1',
+            ProfileID: 'fegiclyn@gmail.com',
             Name: 'Feg Feg',
-            Sexuality: 'Straight',
+            Sexuality: 'Hetero',
             DreamVacation: 'I would love to go to vancouver.',
             FavouriteHobby: 'I love playing tennis',
             FavouriteSport: 'I love tennis',
@@ -354,7 +366,7 @@ async function insertFegiclyn(connection) {
         `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive)
                     VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
-            PersonalityID: '1',
+            PersonalityID: 'fegiclyn@gmail.com',
             Introvertedness: 5,
             Extrovertedness: 5,
             Intuitive: 7,
@@ -372,7 +384,7 @@ async function insertFegiclyn(connection) {
     // Insert Mailbox first because a User needs to have a Mailbox code
     await connection.execute(
         `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
-        { MailboxID: '1', UnreadMail: 0 },
+        { MailboxID: 'fegiclyn@gmail.com', UnreadMail: 0 },
         { autoCommit: false }
     );
 
@@ -383,9 +395,9 @@ async function insertFegiclyn(connection) {
         {
             Email: 'fegiclyn@gmail.com',
             Name: 'Fegiclyn',
-            PersonalityID: '1',
-            ProfileID: '1',
-            MailBoxID: '1'
+            PersonalityID: 'fegiclyn@gmail.com',
+            ProfileID: 'fegiclyn@gmail.com',
+            MailBoxID: 'fegiclyn@gmail.com'
         },
         { autoCommit: true }
     );
@@ -398,9 +410,9 @@ async function insertTerence(connection) {
         `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
         VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
-            ProfileID: '2',
+            ProfileID: 'terence@gmail.com',
             Name: 'Terbear',
-            Sexuality: 'Gay',
+            Sexuality: 'Homosexual',
             DreamVacation: 'Middle east',
             FavouriteHobby: 'I love league',
             FavouriteSport: 'F1',
@@ -414,7 +426,7 @@ async function insertTerence(connection) {
         `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive)
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
-            PersonalityID: '2',
+            PersonalityID: 'terence@gmail.com',
             Introvertedness: 5,
             Extrovertedness: 5,
             Intuitive: 8,
@@ -432,7 +444,7 @@ async function insertTerence(connection) {
     // Insert Mailbox first because a User needs to have a Mailbox code
     await connection.execute(
         `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
-        { MailboxID: '2', UnreadMail: 2 },
+        { MailboxID: 'terence@gmail.com', UnreadMail: 2 },
         { autoCommit: false }
     );
 
@@ -443,9 +455,9 @@ async function insertTerence(connection) {
         {
             Email: 'terence@gmail.com',
             Name: 'Terence',
-            PersonalityID: '2',
-            ProfileID: '2',
-            MailBoxID: '2'
+            PersonalityID: 'terence@gmail.com',
+            ProfileID: 'terence@gmail.com',
+            MailBoxID: 'terence@gmail.com'
         },
         { autoCommit: true }
     );
@@ -459,13 +471,13 @@ async function insertFegico(connection) {
         `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
         VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
-            ProfileID: '3',
-            Name: 'Fegico',
-            Sexuality: 'Straight',
-            DreamVacation: 'Taiwan',
+            ProfileID: 'fegico@gmail.com',
+            Name: 'Faster',
+            Sexuality: 'Hetero',
+            DreamVacation: 'North Korea',
             FavouriteHobby: 'I love guitar',
-            FavouriteSport: 'Pull ups',
-            FavouriteMusicGenre: 'I love jazz',
+            FavouriteSport: 'Muscle ups',
+            FavouriteMusicGenre: 'R&B',
         },
         { autoCommit: false }
     );
@@ -475,7 +487,7 @@ async function insertFegico(connection) {
         `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive)
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
-            PersonalityID: '3',
+            PersonalityID: 'fegico@gmail.com',
             Introvertedness: 2,
             Extrovertedness: 7,
             Intuitive: 9,
@@ -493,7 +505,7 @@ async function insertFegico(connection) {
     // Insert Mailbox first because a User needs to have a Mailbox code
     await connection.execute(
         `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
-        { MailboxID: '3', UnreadMail: 1 },
+        { MailboxID: 'fegico@gmail.com', UnreadMail: 1 },
         { autoCommit: false }
     );
 
@@ -504,9 +516,9 @@ async function insertFegico(connection) {
         {
             Email: 'fegico@gmail.com',
             Name: 'Fegico',
-            PersonalityID: '3',
-            ProfileID: '3',
-            MailBoxID: '3'
+            PersonalityID: 'fegico@gmail.com',
+            ProfileID: 'fegico@gmail.com',
+            MailBoxID: 'fegico@gmail.com'
         },
         { autoCommit: true }
     );
@@ -519,9 +531,9 @@ async function insertJake(connection) {
         `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
         VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
-            ProfileID: '4',
+            ProfileID: 'jake@gmail.com',
             Name: 'Ja Ja',
-            Sexuality: 'Straight',
+            Sexuality: 'Hetero',
             DreamVacation: 'Hawaii',
             FavouriteHobby: 'sleep',
             FavouriteSport: 'Watching shorts',
@@ -535,7 +547,7 @@ async function insertJake(connection) {
         `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive)
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
-            PersonalityID: '4',
+            PersonalityID: 'jake@gmail.com',
             Introvertedness: 2,
             Extrovertedness: 8,
             Intuitive: 8,
@@ -553,7 +565,7 @@ async function insertJake(connection) {
     // Insert Mailbox first because a User needs to have a Mailbox code
     await connection.execute(
         `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
-        { MailboxID: '4', UnreadMail: 1 },
+        { MailboxID: 'jake@gmail.com', UnreadMail: 1 },
         { autoCommit: false }
     );
 
@@ -564,9 +576,9 @@ async function insertJake(connection) {
         {
             Email: 'jake@gmail.com',
             Name: 'Jake',
-            PersonalityID: '4',
-            ProfileID: '4',
-            MailBoxID: '4'
+            PersonalityID: 'jake@gmail.com',
+            ProfileID: 'jake@gmail.com',
+            MailBoxID: 'jake@gmail.com'
         },
         { autoCommit: true }
     );
@@ -579,9 +591,9 @@ async function insertJaklyn(connection) {
         `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
         VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
-            ProfileID: '5',
+            ProfileID: 'jaklyn@gmail.com',
             Name: 'Jyln',
-            Sexuality: 'Straight',
+            Sexuality: 'Hetero',
             DreamVacation: 'Italy',
             FavouriteHobby: 'Dance',
             FavouriteSport: 'gymnastics',
@@ -595,7 +607,7 @@ async function insertJaklyn(connection) {
         `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive)
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
-            PersonalityID: '5',
+            PersonalityID: 'jaklyn@gmail.com',
             Introvertedness: 1,
             Extrovertedness: 9,
             Intuitive: 1,
@@ -613,7 +625,7 @@ async function insertJaklyn(connection) {
     // Insert Mailbox first because a User needs to have a Mailbox code
     await connection.execute(
         `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
-        { MailboxID: '5', UnreadMail: 0 },
+        { MailboxID: 'jaklyn@gmail.com', UnreadMail: 0 },
         { autoCommit: false }
     );
 
@@ -624,9 +636,9 @@ async function insertJaklyn(connection) {
         {
             Email: 'jaklyn@gmail.com',
             Name: 'Jaklyn',
-            PersonalityID: '5',
-            ProfileID: '5',
-            MailBoxID: '5'
+            PersonalityID: 'jaklyn@gmail.com',
+            ProfileID: 'jaklyn@gmail.com',
+            MailBoxID: 'jaklyn@gmail.com'
         },
         { autoCommit: true }
     );
@@ -639,9 +651,9 @@ async function insertTerelyn(connection) {
         `INSERT INTO Profile (ProfileID, Name, Sexuality, DreamVacation, FavouriteHobby, FavouriteSport, FavouriteMusicGenre)
         VALUES (:ProfileID, :Name, :Sexuality, :DreamVacation, :FavouriteHobby, :FavouriteSport, :FavouriteMusicGenre)`,
         {
-            ProfileID: '6',
+            ProfileID: 'terelyn@gmail.com',
             Name: 'Tylin',
-            Sexuality: 'Straight',
+            Sexuality: 'Hetero',
             DreamVacation: 'Greece',
             FavouriteHobby: 'Legos',
             FavouriteSport: 'Running',
@@ -655,7 +667,7 @@ async function insertTerelyn(connection) {
         `INSERT INTO Personality (PersonalityID, Introvertedness, Extrovertedness, Intuitive, Observant, Thinking, Feeling, Prospecting, Judging, Turbulent, Assertive)
         VALUES (:PersonalityID, :Introvertedness, :Extrovertedness, :Intuitive, :Observant, :Thinking, :Feeling, :Prospecting, :Judging, :Turbulent, :Assertive)`,
         {
-            PersonalityID: '6',
+            PersonalityID: 'terelyn@gmail.com',
             Introvertedness: 2,
             Extrovertedness: 8,
             Intuitive: 2,
@@ -673,7 +685,7 @@ async function insertTerelyn(connection) {
     // Insert Mailbox first because a User needs to have a Mailbox code
     await connection.execute(
         `INSERT INTO Mailbox (MailboxID, UnreadMail) VALUES (:MailboxID, :UnreadMail)`,
-        { MailboxID: '6', UnreadMail: 0 },
+        { MailboxID: 'terelyn@gmail.com', UnreadMail: 0 },
         { autoCommit: false }
     );
 
@@ -684,9 +696,9 @@ async function insertTerelyn(connection) {
         {
             Email: 'terelyn@gmail.com',
             Name: 'Terelyn',
-            PersonalityID: '6',
-            ProfileID: '6',
-            MailBoxID: '6'
+            PersonalityID: 'terelyn@gmail.com',
+            ProfileID: 'terelyn@gmail.com',
+            MailBoxID: 'terelyn@gmail.com'
         },
         { autoCommit: true }
     );
