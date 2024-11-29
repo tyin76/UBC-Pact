@@ -372,7 +372,7 @@ async function countHomoSexuals() {
         const response = await fetch("/counthomosexuals", {
             method: 'GET',
             headers: {
-                'Accept': 'application/json' // More standard header
+                'Accept': 'application/json'
             }
         });
 
@@ -385,7 +385,7 @@ async function countHomoSexuals() {
         const message = document.getElementById("usersBySexualityMsg");
         if (data.success) {
             message.textContent = `Number of homosexual users: ${data.count}`;
-            message.style.color = 'green'; // Optional: visual feedback
+            message.style.color = 'green';
             console.log(`Successfully counted: ${data.count}`);
         } else {
             message.textContent = "Failed to count users";
@@ -405,7 +405,7 @@ async function countHeteroSexuals() {
         const response = await fetch("/countheterosexuals", {
             method: 'GET',
             headers: {
-                'Accept': 'application/json' // More standard header
+                'Accept': 'application/json'
             }
         });
 
@@ -418,7 +418,7 @@ async function countHeteroSexuals() {
         const message = document.getElementById("usersBySexualityMsgHetero");
         if (data.success) {
             message.textContent = `Number of heterosexual users: ${data.count}`;
-            message.style.color = 'green'; // Optional: visual feedback
+            message.style.color = 'green';
             console.log(`Successfully counted: ${data.count}`);
         } else {
             message.textContent = "Failed to count users";

@@ -127,7 +127,7 @@ router.post('/insertTestData', async (req, res) => {
 router.get('/counthomosexuals', async (req, res) => {
     try {
         console.log('it ran');
-        const numberHomosexuals = await appService.countHomosexualUsers(); // Ensure this matches your service method
+        const numberHomosexuals = await appService.countHomosexualUsers();
 
         if (numberHomosexuals === null || numberHomosexuals === undefined) {
             return res.status(404).json({
@@ -153,7 +153,7 @@ router.get('/counthomosexuals', async (req, res) => {
 router.get('/countheterosexuals', async (req, res) => {
     try {
         console.log('it ran');
-        const number = await appService.countHeterosexualUsers(); // Ensure this matches your service method
+        const number = await appService.countHeterosexualUsers();
 
         if (number === null || number === undefined) {
             return res.status(404).json({

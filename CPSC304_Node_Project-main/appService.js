@@ -647,14 +647,13 @@ async function countHomosexualUsers() {
                 ['Homosexual']
             );
 
-            console.log("Full Query Result:", result); // More detailed logging
+            console.log("Full Query Result:", result);
 
-            // Safely access count, handle potential empty result
             return result.rows[0][1];
         });
     } catch (error) {
         console.error("Detailed error counting homosexual users:", error);
-        throw error; // Re-throw to allow calling function to handle
+        throw error;
     }
 }
 
@@ -669,14 +668,14 @@ async function countHeterosexualUsers() {
                 ['Hetero']
             );
 
-            console.log("Full Query Result:", result); // More detailed logging
+            console.log("Full Query Result:", result);
 
-            // Safely access count, handle potential empty result
+
             return result.rows[0][1];
         });
     } catch (error) {
         console.error("Detailed error counting heterosexual users:", error);
-        throw error; // Re-throw to allow calling function to handle
+        throw error;
     }
 }
 
