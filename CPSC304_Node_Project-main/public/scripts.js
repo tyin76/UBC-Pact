@@ -425,6 +425,72 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+async function countHomoSexuals() {
+    try {
+        const response = await fetch("/counthomosexuals", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const message = document.getElementById("usersBySexualityMsg");
+        if (data.success) {
+            message.textContent = `Number of homosexual users: ${data.count}`;
+            message.style.color = 'green';
+            console.log(`Successfully counted: ${data.count}`);
+        } else {
+            message.textContent = "Failed to count users";
+            message.style.color = 'red';
+            console.error("Count failed:", data.error);
+        }
+    } catch (error) {
+        const message = document.getElementById("usersBySexualityMsg");
+        message.textContent = "Error occurred while counting";
+        message.style.color = 'red';
+        console.error("Comprehensive error in countHomoSexuals:", error);
+    }
+}
+
+async function countHeteroSexuals() {
+    try {
+        const response = await fetch("/countheterosexuals", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const message = document.getElementById("usersBySexualityMsgHetero");
+        if (data.success) {
+            message.textContent = `Number of heterosexual users: ${data.count}`;
+            message.style.color = 'green';
+            console.log(`Successfully counted: ${data.count}`);
+        } else {
+            message.textContent = "Failed to count users";
+            message.style.color = 'red';
+            console.error("Count failed:", data.error);
+        }
+    } catch (error) {
+        const message = document.getElementById("usersBySexualityMsgHetero");
+        message.textContent = "Error occurred while counting";
+        message.style.color = 'red';
+        console.error("Comprehensive error in countHeteroSexuals:", error);
+    }
+}
+
 async function countUsersByPostalCode() {
     const postalCode = document.getElementById('postalCodeSelect').value;
     const response = await fetch('/count-users-by-postal', {
@@ -458,6 +524,8 @@ window.onload = function () {
     document.getElementById("updateProfile").addEventListener("submit", updateUserProfile)
     document.getElementById("deleteUserFromTableForm").addEventListener("submit", deleteUserFromUserTable);
     document.getElementById("usersToSelect").addEventListener("submit", fetchAndDisplaySelectedUsers);
+    document.getElementById('countHomoSexualsButton').addEventListener('click', countHomoSexuals);
+    document.getElementById('countHeteroSexualsButton').addEventListener('click', countHeteroSexuals);
     document.getElementById("projectFieldsOnUserForm").addEventListener("submit", fetchAndDisplayProjectedUsers);
 };
 

@@ -153,5 +153,56 @@ router.post('/count-users-by-postal', async (req, res) => {
     }
 });
 
+router.get('/counthomosexuals', async (req, res) => {
+    try {
+        console.log('it ran');
+        const numberHomosexuals = await appService.countHomosexualUsers();
+
+        if (numberHomosexuals === null || numberHomosexuals === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", numberHomosexuals);
+        res.json({
+            success: true,
+            count: numberHomosexuals
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
+
+router.get('/countheterosexuals', async (req, res) => {
+    try {
+        console.log('it ran');
+        const number = await appService.countHeterosexualUsers();
+
+        if (number === null || number === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", number);
+        res.json({
+            success: true,
+            count: number
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
 
 module.exports = router;
