@@ -636,6 +636,52 @@ async function countDemotable() {
     });
 }
 
+async function countHomosexualUsers() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                `SELECT Sexuality, COUNT(*) AS HomosexualCount
+                 FROM Profile
+                 WHERE Sexuality = :sexuality 
+                 GROUP BY Sexuality`,
+                ['Homosexual']
+            );
+
+            console.log("Full Query Result:", result); // More detailed logging
+
+            // Safely access count, handle potential empty result
+            return result.rows[0][1];
+        });
+    } catch (error) {
+        console.error("Detailed error counting homosexual users:", error);
+        throw error; // Re-throw to allow calling function to handle
+    }
+}
+
+async function countHeterosexualUsers() {
+    try {
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                `SELECT Sexuality, COUNT(*) AS HeterosexualCount
+                 FROM Profile
+                 WHERE Sexuality = :sexuality 
+                 GROUP BY Sexuality`,
+                ['Hetero']
+            );
+
+            console.log("Full Query Result:", result); // More detailed logging
+
+            // Safely access count, handle potential empty result
+            return result.rows[0][1];
+        });
+    } catch (error) {
+        console.error("Detailed error counting heterosexual users:", error);
+        throw error; // Re-throw to allow calling function to handle
+    }
+}
+
+
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -648,5 +694,7 @@ module.exports = {
     insertUser,
     updateProfile,
     deleteUser,
-    selectUser
+    selectUser,
+    countHomosexualUsers,
+    countHeterosexualUsers
 };

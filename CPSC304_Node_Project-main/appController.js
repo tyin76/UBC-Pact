@@ -55,7 +55,7 @@ router.post("/submit-survey", async (req, res) => {
 });
 
 router.post("/updateUser", async (req, res) => {
-    const {email, fieldToChange, value} = req.body;
+    const { email, fieldToChange, value } = req.body;
 
     const updateResult = await appService.updateProfile(email, fieldToChange, value);
     if (updateResult) {
@@ -66,7 +66,7 @@ router.post("/updateUser", async (req, res) => {
 });
 
 router.delete("/deleteUser", async (req, res) => {
-    const {email} = req.body;
+    const { email } = req.body;
 
     const deleteResult = await appService.deleteUser(email);
     if (deleteResult) {
@@ -103,8 +103,8 @@ router.get('/count-demotable', async (req, res) => {
 
 router.post('/selectUser', async (req, res) => {
 
-    console.log( req.body);
-    const {query} = req.body;
+    console.log(req.body);
+    const { query } = req.body;
 
     const tableContent = await appService.selectUser(query);
 
@@ -123,6 +123,60 @@ router.post('/insertTestData', async (req, res) => {
         res.status(500).json({ success: false });
     }
 })
+
+router.get('/counthomosexuals', async (req, res) => {
+    try {
+        console.log('it ran');
+        const numberHomosexuals = await appService.countHomosexualUsers(); // Ensure this matches your service method
+
+        if (numberHomosexuals === null || numberHomosexuals === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", numberHomosexuals);
+        res.json({
+            success: true,
+            count: numberHomosexuals
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
+
+router.get('/countheterosexuals', async (req, res) => {
+    try {
+        console.log('it ran');
+        const number = await appService.countHeterosexualUsers(); // Ensure this matches your service method
+
+        if (number === null || number === undefined) {
+            return res.status(404).json({
+                success: false,
+                error: "No count could be retrieved"
+            });
+        }
+
+        console.log("Successful homosexuals count:", number);
+        res.json({
+            success: true,
+            count: number
+        });
+    } catch (error) {
+        console.error("Comprehensive error counting homosexuals:", error);
+        res.status(500).json({
+            success: false,
+            error: error.message || "Internal server error"
+        });
+    }
+});
+
+
 
 
 module.exports = router;
