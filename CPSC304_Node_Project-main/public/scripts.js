@@ -616,13 +616,9 @@ async function findUsers(event) {
         return;
     }
 
-
-
     const responseData = await response.json();
     console.log(responseData.data);
     const userContent = responseData.data;
-
-
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
