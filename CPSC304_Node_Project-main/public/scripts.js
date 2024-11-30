@@ -365,23 +365,22 @@ async function getBestMatch(event) {
     });
 }
 
-// Counts rows in the demotable.
-// Modify the function accordingly if using different aggregate functions or procedures.
-async function countDemotable() {
-    const response = await fetch("/count-demotable", {
-        method: 'GET'
-    });
 
-    const responseData = await response.json();
-    const messageElement = document.getElementById('countResultMsg');
+// async function countDemotable() {
+//     const response = await fetch("/count-demotable", {
+//         method: 'GET'
+//     });
 
-    if (responseData.success) {
-        const tupleCount = responseData.count;
-        messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
-    } else {
-        alert("Error in count demotable!");
-    }
-}
+//     const responseData = await response.json();
+//     const messageElement = document.getElementById('countResultMsg');
+
+//     if (responseData.success) {
+//         const tupleCount = responseData.count;
+//         messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
+//     } else {
+//         alert("Error in count demotable!");
+//     }
+// }
 
 async function deleteUserFromUserTable(event) {
     event.preventDefault();
@@ -680,7 +679,7 @@ window.onload = function () {
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("insertTestData").addEventListener("click", insertTestData);
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    //document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("survey-questions").addEventListener("submit", submitSurveyQuestionAnswers)
     document.getElementById("updateProfile").addEventListener("submit", updateUserProfile)
     document.getElementById("deleteUserFromTableForm").addEventListener("submit", deleteUserFromUserTable);
